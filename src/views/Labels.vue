@@ -1,9 +1,9 @@
 <template>
-  <div>Labels
-    <Nav></Nav>
+  <div>
+    <layout>
+      <div>Labels.Vue</div>
+    </layout>
   </div>
-
-
 </template>
 
 <script lang="ts">
