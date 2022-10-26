@@ -1,11 +1,18 @@
 <template>
-  <div>
-    <router-link to="/money">money</router-link>
-    |
-    <router-link to="/labels">labels</router-link>
-    |
-    <router-link to="/statistics">statistics</router-link>
-  </div>
+  <nav>
+    <router-link to="/money" class="item" active-class="selected">
+      <Icon name="money"></Icon>
+      <div>money</div>
+    </router-link>
+    <router-link to="/labels" class="item" active-class="selected">
+      <Icon name="label"></Icon>
+      <div>labels</div>
+    </router-link>
+    <router-link to="/statistics" class="item" active-class="selected">
+      <Icon name="statistics"></Icon>
+      <div>statistics</div>
+    </router-link>
+  </nav>
 </template>
 
 <script lang="ts">
@@ -16,5 +23,22 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+nav {
+  display: flex;
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.25);
+  flex-direction: row;
+  font-size: 12px;
+  > .item {
+    padding: 2px 0;
+    width: 33.33333%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 
+  }
+  > .item.selected{
+    color: red;
+  }
+}
 </style>
