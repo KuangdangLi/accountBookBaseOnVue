@@ -1,24 +1,25 @@
 <template>
   <div>
     <ul class="types">
-      <li @click="toggle('-')" :class="{selected: this.type === '-'}">支出</li>
-      <li @click="toggle('+')" :class="{selected: this.type === '+'}">收入</li>
+      <li @click="toggle('-')" :class="{selected: this.value === '-'}">支出</li>
+      <li @click="toggle('+')" :class="{selected: this.value === '+'}">收入</li>
     </ul>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from "vue"
-import {Component} from 'vue-property-decorator';
+import {Component, Prop} from 'vue-property-decorator';
 
 @Component
 export default class Types extends Vue{
-  type:string = "-";// "-"表示支出
+  @Prop(String) value!:string;
   toggle(type:string){
     if(type!=='-' && type!=='+'){
       throw new Error("type is unknown")
+    }else{
+      this.$emit('update:value',type)
     }
-    this.type = type
   }
 }
 </script>
