@@ -2,7 +2,7 @@
   <Layout class-prefix="layout">
   <NumberPad></NumberPad>
   <Types></Types>
-  <Notes></Notes>
+  <Notes @update:value="onNotesUpdate"></Notes>
   <Tags :data-source.sync="tags"></Tags>
     {{record}}
   </Layout>
@@ -29,6 +29,9 @@ type Record = {
 export default class Money extends Vue {
   tags= ['衣','食','住','行'];
   record:Record = {type:'-',amount:0,tags:[],notes:''};
+  onNotesUpdate(value:string){
+    this.record.notes =value
+  }
 }
 </script>
 
