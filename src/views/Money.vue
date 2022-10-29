@@ -4,6 +4,7 @@
   <Types></Types>
   <Notes></Notes>
   <Tags :data-source.sync="tags"></Tags>
+    {{record}}
   </Layout>
 </template>
 
@@ -15,11 +16,19 @@ import Tags from '@/components/Money/Tags.vue';
 import Vue from 'vue';
 import {Component} from 'vue-property-decorator';
 
+type Record = {
+  type:string,
+  amount:number,
+  tags?:string[],
+  notes?:string
+}
+
 @Component({
  components: {Tags, Types, Notes, NumberPad}
 })
 export default class Money extends Vue {
-      tags= ['衣','食','住','行']
+  tags= ['衣','食','住','行'];
+  record:Record = {type:'-',amount:0,tags:[],notes:''};
 }
 </script>
 
