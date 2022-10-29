@@ -44,12 +44,15 @@ export default class Money extends Vue {
   tags= ['衣','食','住','行'];
   record:Record = {type:'-',amount:0,tags:[],notes:''};
   recordList:Record[] = recordList;
-
+  reset(){
+    this.record = {type:'-',amount:0,tags:[],notes:''};
+  }
   saveRecord(){
     this.record.createdAt = new Date();
     const newRecord =JSON.parse(JSON.stringify(this.record));
     recordList.push(newRecord)
     window.localStorage.setItem('recordList',JSON.stringify(recordList))
+    this.reset()
   }
 }
 </script>
