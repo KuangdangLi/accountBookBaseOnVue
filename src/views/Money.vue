@@ -17,14 +17,24 @@ import Tags from '@/components/Money/Tags.vue';
 import Vue from 'vue';
 import {Component} from 'vue-property-decorator';
 
-window.localStorage.setItem('recordVersion','0.0.1')
+const version:string = window.localStorage.getItem('recordVersion') || '0';
+if(version === '0.0.1'){
+    const state = window.localStorage.getItem('recordList')
+    if(state){
+     const newState = JSON.parse(state)
+     newState.forEach((record:Record)=>{record.createdAt = new Date()});
+     window.localStorage.setItem('recordList',JSON.stringify(newState))
+    }
+    window.localStorage.setItem('recordVersion','0.0.2')
+}
 const recordList:Record[] =JSON.parse(window.localStorage.getItem('recordList') || "[]")
 
 type Record = {
   type:string,
   amount:number,
   tags?:string[],
-  notes?:string
+  notes?:string,
+  createdAt?:Date
 }
 
 @Component({
@@ -41,10 +51,9 @@ export default class Money extends Vue {
     this.record.tags = value
   }
   saveRecord(){
-    const newRecord =JSON.parse(JSON.stringify(this.record))
-    console.log(newRecord);
+    this.record.createdAt = new Date();
+    const newRecord =JSON.parse(JSON.stringify(this.record));
     recordList.push(newRecord)
-    console.log(recordList);
     window.localStorage.setItem('recordList',JSON.stringify(recordList))
   }
 }
