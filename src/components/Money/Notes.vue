@@ -2,7 +2,7 @@
   <div>
     <label class="notes">
       <span class="name">备注</span>
-      <input type="text" placeholder="在这里输入备注" maxlength="10" v-model="value" >
+      <input type="text" placeholder="在这里输入备注" maxlength="10" :value="value" @change="updateValue">
     </label>
     {{value}}
   </div>
@@ -10,14 +10,14 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import {Component, Watch} from 'vue-property-decorator';
+import {Component, Prop} from 'vue-property-decorator';
 
 @Component
 export default class Notes extends Vue{
-  value:string = '';
-  @Watch('value')
-  updateValue(value:string){
-      this.$emit('update:value', value);
+  @Prop(String) value!:string;
+  updateValue(event:KeyboardEvent){
+    const input = event.target as HTMLInputElement;
+    this.$emit('update:value',input.value)
   }
 }
 </script>
