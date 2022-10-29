@@ -8,19 +8,18 @@
 </template>
 
 <script lang="ts">
-
 import NumberPad from '@/components/Money/NumberPad.vue';
 import Notes from '@/components/Money/Notes.vue';
 import Types from '@/components/Money/Types.vue';
 import Tags from '@/components/Money/Tags.vue';
-export default  {
-  name: 'Money',
-  components: {Tags, Types, Notes, NumberPad},
-  data(){
-    return {
-      tags: ['衣','食','住','行']
-    }
-  }
+import Vue from 'vue';
+import {Component} from 'vue-property-decorator';
+
+@Component({
+ components: {Tags, Types, Notes, NumberPad}
+})
+export default class Money extends Vue {
+      tags= ['衣','食','住','行']
 }
 </script>
 
