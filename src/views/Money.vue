@@ -1,6 +1,6 @@
 <template>
   <Layout class-prefix="layout">
-  <NumberPad></NumberPad>
+  <NumberPad :value.sync="record.amount"></NumberPad>
   <Types :value.sync="record.type"></Types>
   <Notes @update:value="onUpdateNotes"></Notes>
   <Tags :data-source.sync="tags" @update:value="onUpdateTags"></Tags>
