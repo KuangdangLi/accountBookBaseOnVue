@@ -1,7 +1,11 @@
+type Tag = {
+  name: string,
+  id: string
+}
 type RecordItem = {
   type:string,
   amount:number,
-  tags?:string[],
+  tags?:Tag[],
   notes?:string,
   createdAt?:Date
 }
