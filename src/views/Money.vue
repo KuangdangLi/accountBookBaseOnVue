@@ -16,7 +16,7 @@ import Types from '@/components/Money/Types.vue';
 import Tags from '@/components/Money/Tags.vue';
 import Vue from 'vue';
 import {Component} from 'vue-property-decorator';
-import recordListModel from '@/model/recordListModel';
+import recordListModel from '@/models/recordListModel';
 
 const version:string = window.localStorage.getItem('recordVersion') || '0';
 // if(version === '0.0.1'){
