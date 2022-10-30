@@ -1,10 +1,10 @@
 <template>
   <Layout class-prefix="layout">
     {{recordList}}
-  <NumberPad :value.sync="record.amount" @submit="saveRecord"></NumberPad>
-  <Types :value.sync="record.type"></Types>
-  <Notes :value.sync="record.notes"></Notes>
-  <Tags :data-source.sync="tags" :value.sync="record.tags" ></Tags>
+    <NumberPad :value.sync="record.amount" @submit="saveRecord"></NumberPad>
+    <Types :value.sync="record.type"></Types>
+    <Notes :value.sync="record.notes"></Notes>
+    <Tags :data-source.sync="tags" :value.sync="record.tags" ></Tags>
     {{record}}
   </Layout>
 </template>
@@ -19,31 +19,25 @@ import {Component} from 'vue-property-decorator';
 
 const version:string = window.localStorage.getItem('recordVersion') || '0';
 if(version === '0.0.1'){
-    const state = window.localStorage.getItem('recordList')
-    if(state){
-     const newState = JSON.parse(state)
-     newState.forEach((record:Record)=>{record.createdAt = new Date()});
-     window.localStorage.setItem('recordList',JSON.stringify(newState))
-    }
-    window.localStorage.setItem('recordVersion','0.0.2')
+  const state = window.localStorage.getItem('recordList')
+  if(state){
+    const newState = JSON.parse(state)
+    newState.forEach((record:RecordItem)=>{record.createdAt = new Date()});
+    window.localStorage.setItem('recordList',JSON.stringify(newState))
+  }
+  window.localStorage.setItem('recordVersion','0.0.2')
 }
-const recordList:Record[] =JSON.parse(window.localStorage.getItem('recordList') || "[]")
+const recordList:RecordItem[] =JSON.parse(window.localStorage.getItem('recordList') || "[]")
 
-type Record = {
-  type:string,
-  amount:number,
-  tags?:string[],
-  notes?:string,
-  createdAt?:Date
-}
+
 
 @Component({
- components: {Tags, Types, Notes, NumberPad}
+  components: {Tags, Types, Notes, NumberPad}
 })
 export default class Money extends Vue {
   tags= ['衣','食','住','行'];
-  record:Record = {type:'-',amount:0,tags:[],notes:''};
-  recordList:Record[] = recordList;
+  record:RecordItem = {type:'-',amount:0,tags:[],notes:''};
+  recordList:RecordItem[] = recordList;
   reset(){
     this.record = {type:'-',amount:0,tags:[],notes:''};
   }
