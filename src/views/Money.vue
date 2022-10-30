@@ -16,18 +16,19 @@ import Types from '@/components/Money/Types.vue';
 import Tags from '@/components/Money/Tags.vue';
 import Vue from 'vue';
 import {Component} from 'vue-property-decorator';
+import recordListModel from '@/model/recordListModel';
 
 const version:string = window.localStorage.getItem('recordVersion') || '0';
-if(version === '0.0.1'){
-  const state = window.localStorage.getItem('recordList')
-  if(state){
-    const newState = JSON.parse(state)
-    newState.forEach((record:RecordItem)=>{record.createdAt = new Date()});
-    window.localStorage.setItem('recordList',JSON.stringify(newState))
-  }
-  window.localStorage.setItem('recordVersion','0.0.2')
-}
-const recordList:RecordItem[] =JSON.parse(window.localStorage.getItem('recordList') || "[]")
+// if(version === '0.0.1'){
+//   const state = window.localStorage.getItem('recordList')
+//   if(state){
+//     const newState = JSON.parse(state)
+//     newState.forEach((record:RecordItem)=>{record.createdAt = new Date()});
+//     window.localStorage.setItem('recordList',JSON.stringify(newState))
+//   }
+//   window.localStorage.setItem('recordVersion','0.0.2')
+// }
+const recordList:RecordItem[] = recordListModel.fetch()
 
 
 
@@ -43,9 +44,9 @@ export default class Money extends Vue {
   }
   saveRecord(){
     this.record.createdAt = new Date();
-    const newRecord =JSON.parse(JSON.stringify(this.record));
-    recordList.push(newRecord)
-    window.localStorage.setItem('recordList',JSON.stringify(recordList))
+    const newRecord = recordListModel.clone(this.record);
+    this.recordList.push(newRecord)
+    recordListModel.save(this.recordList)
     this.reset()
   }
 }
