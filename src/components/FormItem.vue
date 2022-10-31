@@ -1,8 +1,8 @@
 <template>
   <div>
-    <label class="notes">
-      <span class="name">备注</span>
-      <input type="text" placeholder="在这里输入备注" maxlength="10" :value="value" @change="updateValue">
+    <label class="formItem">
+      <span class="name">{{ title }}</span>
+      <input type="text" :placeholder="placeHolder" maxlength="10" :value="value" @change="updateValue">
     </label>
     {{value}}
   </div>
@@ -13,8 +13,11 @@ import Vue from 'vue';
 import {Component, Prop} from 'vue-property-decorator';
 
 @Component
-export default class Notes extends Vue{
+export default class FormItem extends Vue{
   @Prop(String) value!:string;
+  @Prop(String) title!:string;
+  @Prop(String) placeHolder!:string;
+
   updateValue(event:KeyboardEvent){
     const input = event.target as HTMLInputElement;
     this.$emit('update:value',input.value)
@@ -23,7 +26,7 @@ export default class Notes extends Vue{
 </script>
 
 <style lang="scss" scoped>
-.notes {
+.formItem {
   font-size: 14px;
   background: #f5f5f5;
   padding-left: 16px;
