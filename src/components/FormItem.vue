@@ -2,7 +2,7 @@
   <div>
     <label class="formItem">
       <span class="name">{{ title }}</span>
-      <input type="text" :placeholder="placeHolder" maxlength="10" :value="value" @change="updateValue">
+      <input type="text" :placeholder="editPlaceHolder" maxlength="10" :value="value" @change="updateValue">
     </label>
     {{value}}
   </div>
@@ -16,7 +16,7 @@ import {Component, Prop} from 'vue-property-decorator';
 export default class FormItem extends Vue{
   @Prop(String) value!:string;
   @Prop(String) title!:string;
-  @Prop(String) placeHolder!:string;
+  @Prop(String) editPlaceHolder!:string;
 
   updateValue(event:KeyboardEvent){
     const input = event.target as HTMLInputElement;

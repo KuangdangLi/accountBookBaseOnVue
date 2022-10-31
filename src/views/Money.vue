@@ -3,7 +3,7 @@
     {{recordList}}
     <NumberPad :value.sync="record.amount" @submit="saveRecord"></NumberPad>
     <Types :value.sync="record.type"></Types>
-    <Notes :value.sync="record.notes"></Notes>
+    <FormItem :value.sync="record.notes" title="备注" edit-place-holder="在这里输入备注"></FormItem>
     <Tags :data-source="tags" @update:dataSource="createTag" :value.sync="record.tags" ></Tags>
     {{record}}
   </Layout>
@@ -11,13 +11,13 @@
 
 <script lang="ts">
 import NumberPad from '@/components/Money/NumberPad.vue';
-import Notes from '@/components/Money/Notes.vue';
 import Types from '@/components/Money/Types.vue';
 import Tags from '@/components/Money/Tags.vue';
 import Vue from 'vue';
 import {Component} from 'vue-property-decorator';
 import recordListModel from '@/models/recordListModel';
 import tagListModel from '@/models/tagListModel';
+import FormItem from '@/components/FormItem.vue';
 
 const version:string = window.localStorage.getItem('recordVersion') || '0';
 // if(version === '0.0.1'){
@@ -34,7 +34,7 @@ const tagList = tagListModel.fetch()
 
 
 @Component({
-  components: {Tags, Types, Notes, NumberPad}
+  components: {FormItem, Tags, Types, NumberPad}
 })
 export default class Money extends Vue {
   tags= tagList;
