@@ -1,7 +1,7 @@
 <template>
     <layout>
       <div class="tags">
-        <router-link class="tag" to="/" v-for="tag in tags" :key="tag.id">
+        <router-link class="tag" :to="`/labels/edit/${tag.id}`" v-for="tag in tags" :key="tag.id">
           <span>{{ tag.name }}</span>
           <Icon name="right"></Icon>
         </router-link>
