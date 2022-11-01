@@ -4,7 +4,7 @@
     <NumberPad :value.sync="record.amount" @submit="saveRecord"></NumberPad>
     <Types :value.sync="record.type"></Types>
     <FormItem :value.sync="record.notes" title="备注" edit-place-holder="在这里输入备注"></FormItem>
-    <Tags :data-source="tags" @update:dataSource="createTag" :value.sync="record.tags" ></Tags>
+    <Tags  :value.sync="record.tags" ></Tags>
     {{record}}
   </Layout>
 </template>
@@ -15,9 +15,8 @@ import Types from '@/components/Money/Types.vue';
 import Tags from '@/components/Money/Tags.vue';
 import Vue from 'vue';
 import {Component} from 'vue-property-decorator';
-import recordListModel from '@/models/recordListModel';
-import tagListModel from '@/models/tagListModel';
 import FormItem from '@/components/FormItem.vue';
+import store from '@/store/store';
 
 const version:string = window.localStorage.getItem('recordVersion') || '0';
 // if(version === '0.0.1'){
@@ -29,29 +28,20 @@ const version:string = window.localStorage.getItem('recordVersion') || '0';
 //   }
 //   window.localStorage.setItem('recordVersion','0.0.2')
 // }
-const recordList:RecordItem[] = recordListModel.fetch()
-const tagList = tagListModel.fetch()
 
 
 @Component({
   components: {FormItem, Tags, Types, NumberPad}
 })
 export default class Money extends Vue {
-  tags= tagList;
+  tags= store.tagList;
   record:RecordItem = {type:'-',amount:0,tags:[],notes:''};
-  recordList:RecordItem[] = recordList;
+  recordList = store.recordList;
   reset(){
     this.record = {type:'-',amount:0,tags:[],notes:''};
   }
-  createTag(name:string){
-    tagListModel.create(name)
-    this.tags = tagListModel.fetch()
-  }
   saveRecord(){
-    this.record.createdAt = new Date();
-    const newRecord = recordListModel.clone(this.record);
-    this.recordList.push(newRecord)
-    recordListModel.save(this.recordList)
+    store.createRecord(this.record)
     this.reset()
   }
 }

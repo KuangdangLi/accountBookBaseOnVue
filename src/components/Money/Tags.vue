@@ -4,7 +4,7 @@
       <button @click="create">新增标签</button>
     </div>
     <ul class="current">
-      <li v-for="tag in dataSource" :key="tag.id" @click="toggle(tag.id)" :class="{selected: idList.indexOf(tag.id)>=0}">{{tag.name}}</li>
+      <li v-for="tag in tagList" :key="tag.id" @click="toggle(tag.id)" :class="{selected: idList.indexOf(tag.id)>=0}">{{tag.name}}</li>
     </ul>
   </div>
 </template>
@@ -12,11 +12,12 @@
 <script lang="ts">
 import Vue from 'vue';
 import {Component, Prop, Watch} from 'vue-property-decorator';
+import store from '@/store/store';
 
 @Component
 export default class Tags extends Vue{
-  @Prop(Array) dataSource!:Tag[];
   @Prop(Array) value!:Tag[];
+  tagList = store.fetchTags()
   selectedTags = this.value;
   idList:string[] = []
   @Watch('value')
@@ -25,19 +26,7 @@ export default class Tags extends Vue{
     this.idList = this.selectedTags.map(item=>item.id);
   }
   create(){
-    const name = window.prompt('请输入标签名');
-    if(name === ''){
-      window.alert('标签名不能为空')
-    }else if(this.dataSource && name){
-      const nameList = this.dataSource.map(tag => tag.name)
-      if(nameList.indexOf(name)>= 0 ){
-        window.alert('不能输入已存在的标签名')
-      }else if(name.length >5 ){
-        window.alert('标签名不能过长')
-      } else{
-        this.$emit('update:dataSource', name);
-      }
-    }
+    store.createTag()
   }
   toggle(id:string){
     const index = this.idList.indexOf(id);
@@ -46,13 +35,13 @@ export default class Tags extends Vue{
       this.$emit('update:value',this.selectedTags)
     }else{
       let index = -1;
-      for(let i = 0;i<this.dataSource.length;i++){
-        if(this.dataSource[i].id === id){
+      for(let i = 0;i<this.tagList.length;i++){
+        if(this.tagList[i].id === id){
           index = i;
           break
         }
       }
-      this.selectedTags.push(this.dataSource[index])
+      this.selectedTags.push(this.tagList[index])
       this.$emit('update:value',this.selectedTags)
     }
   }

@@ -15,29 +15,17 @@
 <script lang="ts">
 import Vue from 'vue'
 import {Component} from 'vue-property-decorator';
-import tagListModel from '@/models/tagListModel';
 import Button from '@/components/Button.vue';
+import store from '@/store/store';
 
-tagListModel.fetch()
+
 @Component({
   components: {Button}
 })
 export default class Labels extends Vue{
-  tags = tagListModel.data
+  tags = store.tagList
   createTag(){
-    const name = window.prompt('请输入标签名');
-    if(name === ''){
-      window.alert('标签名不能为空')
-    }else if(this.tags && name){
-      const nameList = this.tags.map(tag => tag.name)
-      if(nameList.indexOf(name)>= 0 ){
-        window.alert('不能输入已存在的标签名')
-      }else if(name.length >5 ){
-        window.alert('标签名不能过长')
-      } else{
-        tagListModel.create(name)
-      }
-    }
+    store.createTag()
   }
 }
 </script>

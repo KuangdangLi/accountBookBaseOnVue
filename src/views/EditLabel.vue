@@ -13,6 +13,7 @@
   <div class="button-wrapper">
     <Button @click="remove">删除标签</Button>
   </div>
+    {{tag}}
   </layout>
 </template>
 
@@ -21,18 +22,19 @@ import Vue from 'vue';
 import {Component} from 'vue-property-decorator';
 import Button from '@/components/Button.vue';
 import FormItem from "@/components/FormItem.vue"
-import tagListModel from '@/models/tagListModel';
+import store from '@/store/store';
 
-const tagList = tagListModel.fetch()
+
 
 @Component({components: {Button,FormItem}})
 export default class EditLabel extends Vue {
   tag: Tag | undefined
+  tagList = store.tagList
   created(){
     const id = this.$route.params.id
-    const index = tagList.map(tag=>tag.id).indexOf(id);
+    const index = this.tagList.map(tag=>tag.id).indexOf(id);
     if(index>=0){
-      this.tag = tagList[index]
+      this.tag = this.tagList[index]
     }else{
       this.$router.replace('/404')
     }
@@ -41,13 +43,14 @@ export default class EditLabel extends Vue {
     this.$router.back()
   }
   update(name:string){
-    if(this.tag) tagListModel.update(this.tag.id,name)
+    if(this.tag) store.updateTag(this.tag.id,name)
   }
   remove(){
     if(this.tag) {
-      tagListModel.remove(this.tag.id);
-      window.alert('删除成功')
-      this.$router.back()
+      if(store.removeTag(this.tag.id)){
+        window.alert('删除成功')
+        this.$router.back()
+      }
     }
   }
 }
