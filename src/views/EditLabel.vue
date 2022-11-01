@@ -22,14 +22,16 @@ import Vue from 'vue';
 import {Component} from 'vue-property-decorator';
 import Button from '@/components/Button.vue';
 import FormItem from "@/components/FormItem.vue"
-import store from '@/store/store';
-
+import store from '@/store/index';
 
 
 @Component({components: {Button,FormItem}})
 export default class EditLabel extends Vue {
   tag: Tag | undefined
-  tagList = store.tagList
+  tagList = store.state.tagList
+  beforeCreated(){
+    store.commit('fetchTags')
+  }
   created(){
     const id = this.$route.params.id
     const index = this.tagList.map(tag=>tag.id).indexOf(id);
@@ -43,14 +45,14 @@ export default class EditLabel extends Vue {
     this.$router.back()
   }
   update(name:string){
-    if(this.tag) store.updateTag(this.tag.id,name)
+    console.log('editLabel页面：'+ name);
+    if(this.tag) {const id =this.tag.id;store.commit('updateTag', {id:id, newName:name})}
   }
   remove(){
     if(this.tag) {
-      if(store.removeTag(this.tag.id)){
+      store.commit('removeTag',this.tag.id)
         window.alert('删除成功')
         this.$router.back()
-      }
     }
   }
 }

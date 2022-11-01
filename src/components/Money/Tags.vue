@@ -12,12 +12,12 @@
 <script lang="ts">
 import Vue from 'vue';
 import {Component, Prop, Watch} from 'vue-property-decorator';
-import store from '@/store/store';
+import store from '@/store/index';
 
 @Component
 export default class Tags extends Vue{
   @Prop(Array) value!:Tag[];
-  tagList = store.fetchTags()
+  tagList = store.state.tagList
   selectedTags = this.value;
   idList:string[] = []
   @Watch('value')
@@ -26,7 +26,7 @@ export default class Tags extends Vue{
     this.idList = this.selectedTags.map(item=>item.id);
   }
   create(){
-    store.createTag()
+    store.commit('createTag')
   }
   toggle(id:string){
     const index = this.idList.indexOf(id);
