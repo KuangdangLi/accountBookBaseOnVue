@@ -13,20 +13,18 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
 import {Component} from 'vue-property-decorator';
 import Button from '@/components/Button.vue';
 import store from '@/store/index';
+import {mixins} from 'vue-class-component';
+import fetchHelper from '@/mixins/fetchHelper';
 
 
 @Component({
   components: {Button}
 })
-export default class Labels extends Vue{
+export default class Labels extends mixins(fetchHelper) {
   tags = store.state.tagList
-  beforeCreated(){
-    store.commit('fetchTags')
-  }
   createTag(){
     store.commit('createTag')
   }

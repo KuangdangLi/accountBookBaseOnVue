@@ -13,10 +13,11 @@
 import NumberPad from '@/components/Money/NumberPad.vue';
 import Types from '@/components/Money/Types.vue';
 import Tags from '@/components/Money/Tags.vue';
-import Vue from 'vue';
 import {Component} from 'vue-property-decorator';
 import FormItem from '@/components/FormItem.vue';
 import store from "@/store/index"
+import {mixins} from 'vue-class-component';
+import fetchHelper from '@/mixins/fetchHelper';
 
 const version:string = window.localStorage.getItem('recordVersion') || '0';
 // if(version === '0.0.1'){
@@ -33,14 +34,10 @@ const version:string = window.localStorage.getItem('recordVersion') || '0';
 @Component({
   components: {FormItem, Tags, Types, NumberPad}
 })
-export default class Money extends Vue {
+export default class Money extends mixins(fetchHelper) {
   tags= store.state.tagList;
   record:RecordItem = {type:'-',amount:0,tags:[],notes:''};
   recordList = store.state.recordList;
-  beforeCreated(){
-    store.commit('fetchTags')
-    store.commit('fetchRecords')
-  }
   reset(){
     this.record = {type:'-',amount:0,tags:[],notes:''};
   }

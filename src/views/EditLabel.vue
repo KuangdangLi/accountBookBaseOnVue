@@ -18,20 +18,18 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
 import {Component} from 'vue-property-decorator';
 import Button from '@/components/Button.vue';
 import FormItem from "@/components/FormItem.vue"
 import store from '@/store/index';
+import {mixins} from 'vue-class-component';
+import fetchHelper from '@/mixins/fetchHelper';
 
 
 @Component({components: {Button,FormItem}})
-export default class EditLabel extends Vue {
+export default class EditLabel extends mixins(fetchHelper) {
   tag: Tag | undefined
   tagList = store.state.tagList
-  beforeCreated(){
-    store.commit('fetchTags')
-  }
   created(){
     const id = this.$route.params.id
     const index = this.tagList.map(tag=>tag.id).indexOf(id);
