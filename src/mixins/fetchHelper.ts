@@ -7,7 +7,6 @@ export class fetchHelper extends Vue {
   beforeCreate(){
     store.commit('fetchTags')
     store.commit('fetchRecords')
-    console.log('mixins引入');
   }
 }
 
