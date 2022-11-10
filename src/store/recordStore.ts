@@ -12,7 +12,7 @@ const recordStore = {
     window.localStorage.setItem(localStorageKeyName,JSON.stringify(this.recordList))
   },
   createRecord(data:RecordItem){
-    data.createdAt = new Date();
+    data.createdAt = new Date().toISOString();
     // const newRecord = clone(data);
     this.recordList.push(clone(data))
     this.saveRecord()
