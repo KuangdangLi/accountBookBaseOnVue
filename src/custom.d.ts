@@ -7,5 +7,5 @@ type RecordItem = {
   amount:number,
   tags?:Tag[],
   notes?:string,
-  createdAt?:Date
+  createdAt?: string
 }
