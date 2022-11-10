@@ -2,7 +2,7 @@
   <Layout class-prefix="layout">
     {{recordList}}
     <NumberPad :value.sync="record.amount" @submit="saveRecord"></NumberPad>
-    <Types :value.sync="record.type"></Types>
+    <Tabs :data-source="recordTypeList" class-prefix="type" :value.sync="record.type"></Tabs>
     <FormItem :value.sync="record.notes" title="备注" edit-place-holder="在这里输入备注"></FormItem>
     <Tags  :value.sync="record.tags" ></Tags>
     {{record}}
@@ -18,6 +18,8 @@ import FormItem from '@/components/FormItem.vue';
 import store from "@/store/index"
 import {mixins} from 'vue-class-component';
 import fetchHelper from '@/mixins/fetchHelper';
+import Tabs from '@/components/Tabs.vue';
+import recordTypeList from '@/constants/recordTypeList';
 
 const version:string = window.localStorage.getItem('recordVersion') || '0';
 // if(version === '0.0.1'){
@@ -32,12 +34,13 @@ const version:string = window.localStorage.getItem('recordVersion') || '0';
 
 
 @Component({
-  components: {FormItem, Tags, Types, NumberPad}
+  components: {Tabs, FormItem, Tags, Types, NumberPad}
 })
 export default class Money extends mixins(fetchHelper) {
   tags= store.state.tagList;
   record:RecordItem = {type:'-',amount:0,tags:[],notes:''};
   recordList = store.state.recordList;
+  recordTypeList = recordTypeList
   reset(){
     this.record = {type:'-',amount:0,tags:[],notes:''};
   }
