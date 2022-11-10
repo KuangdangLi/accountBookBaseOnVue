@@ -28,9 +28,6 @@ import fetchHelper from '@/mixins/fetchHelper';
 import dayjs from 'dayjs';
 import clone from '@/lib/clone';
 
-// type GroupedListHashTable = {
-//   [key:string]: Result
-// }
 type Result =  {title:string,items:RecordItem[],total?:number}[]
 
 @Component({
@@ -72,13 +69,15 @@ export default class Statistics extends mixins(fetchHelper) {
           }else{
             result.push({title:dayjs(current.createdAt).format('YYYY-MM-DD'),items:[newList[i]]})
           }
-          result.map(group=>{
-            group.total = group.items.reduce((sum,item)=>{
-              return sum + item.amount
-            },0)
-          })
+
         }
       }
+    result.map(group=>{
+      group.total = group.items.reduce((sum,item)=>{
+        return sum + item.amount
+      },0)
+    })
+    console.log(result[0].total);
       return result
   }
   recordTypeList = recordTypeList
