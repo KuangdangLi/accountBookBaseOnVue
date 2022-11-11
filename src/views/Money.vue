@@ -1,11 +1,9 @@
 <template>
   <Layout class-prefix="layout">
-    {{recordList}}
     <NumberPad :value.sync="record.amount" @submit="saveRecord"></NumberPad>
     <Tabs :data-source="recordTypeList" class-prefix="type" :value.sync="record.type"></Tabs>
     <FormItem :value.sync="record.notes" title="备注" edit-place-holder="在这里输入备注"></FormItem>
     <Tags  :value.sync="record.tags" ></Tags>
-    {{record}}
   </Layout>
 </template>
 
@@ -45,6 +43,10 @@ export default class Money extends mixins(stateHelper) {
     this.record = {type:'-',amount:0,tags:[],notes:''};
   }
   saveRecord(){
+    if(this.record.tags?.length===0){
+      window.alert('请选择标签')
+      return
+    }
     store.commit('createRecord',this.record)
     this.reset()
   }
