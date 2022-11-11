@@ -17,17 +17,15 @@ import {Component} from 'vue-property-decorator';
 import Button from '@/components/Button.vue';
 import store from '@/store/index';
 import {mixins} from 'vue-class-component';
-import fetchHelper from '@/mixins/fetchHelper';
+import stateHelper from '@/mixins/stateHelper';
 
 
 @Component({
   components: {Button}
 })
-export default class Labels extends mixins(fetchHelper) {
+export default class Labels extends mixins(stateHelper) {
   tags = store.state.tagList
-  createTag(){
-    store.commit('createTag')
-  }
+
 }
 </script>
 

@@ -1,7 +1,7 @@
 <template>
   <div class="tags">
     <div class="new">
-      <button @click="create">新增标签</button>
+      <button @click="createTag">新增标签</button>
     </div>
     <ul class="current">
       <li v-for="tag in tagList" :key="tag.id" @click="toggle(tag.id)" :class="{selected: idList.indexOf(tag.id)>=0}">{{tag.name}}</li>
@@ -10,12 +10,13 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
 import {Component, Prop, Watch} from 'vue-property-decorator';
 import store from '@/store/index';
+import stateHelper from '@/mixins/stateHelper';
+import {mixins} from 'vue-class-component';
 
 @Component
-export default class Tags extends Vue{
+export default class Tags extends mixins(stateHelper){
   @Prop(Array) value!:Tag[];
   tagList = store.state.tagList
   selectedTags = this.value;
@@ -24,9 +25,6 @@ export default class Tags extends Vue{
   select(){
     this.selectedTags = this.value;
     this.idList = this.selectedTags.map(item=>item.id);
-  }
-  create(){
-    store.commit('createTag')
   }
   toggle(id:string){
     const index = this.idList.indexOf(id);
