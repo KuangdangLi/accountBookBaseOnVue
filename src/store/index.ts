@@ -45,17 +45,18 @@ const store = new Vuex.Store({
     },
     createTag(state,name:string){
       // const name = window.prompt('请输入标签名');
+      state.createTagError = null
       if(name === ''){
         // window.alert('标签名不能为空')
-        state.createTagError = new Error('标签名不能为空')
+        return
       }else if(state.tagList && name){
         const nameList = state.tagList.map(tag => tag.name)
         if(nameList.indexOf(name)>= 0 ){
           // window.alert('不能输入已存在的标签名')
-          state.createTagError = new Error('标签名重复')
+          state.createTagError = new Error('duplicate Tag name')
         }else if(name.length >10 ){
           // window.alert('标签名不能过长')
-          state.createTagError = new Error('标签名不能过长')
+          state.createTagError = new Error('the tag name is too long')
         } else{
           const id = createId().toString()
           state.tagList.push({id,name})
