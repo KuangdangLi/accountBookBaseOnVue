@@ -26,7 +26,7 @@ window.onload = function () {
 if(document.documentElement.clientWidth >500 ){
   window.alert('为了您得到满意的浏览效果，请用手机扫描二维码打开本页面')
   const img = document.createElement('img')
-  img.src = '/qrCode.png'
+  img.src = './qrCode.png'
   img.style.position = 'fixed'
   img.style.left = '50%'
   img.style.top = '50%'
