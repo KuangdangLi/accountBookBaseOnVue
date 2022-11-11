@@ -36,6 +36,12 @@ const store = new Vuex.Store({
     },
     fetchTags(state){
       state.tagList = JSON.parse(window.localStorage.getItem('tagList') || '[]')
+      if(state.tagList && (state.tagList as Tag[]).length === 0){
+        store.commit('createTag','衣')
+        store.commit('createTag','食')
+        store.commit('createTag','住')
+        store.commit('createTag','行')
+      }
     },
     setCurrentTag(state,id:string){
       state.currentTag = state.tagList.filter(item => item.id ===id)[0]
@@ -46,8 +52,7 @@ const store = new Vuex.Store({
     createTag(state,name:string){
       // const name = window.prompt('请输入标签名');
       state.createTagError = null
-      if(name === ''){
-        // window.alert('标签名不能为空')
+      if(!name ){
         return
       }else if(state.tagList && name){
         const nameList = state.tagList.map(tag => tag.name)

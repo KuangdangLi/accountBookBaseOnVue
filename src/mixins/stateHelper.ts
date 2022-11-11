@@ -4,7 +4,7 @@ import store from '@/store';
 
 const errorMap:{[key:string]:string} = {
   'duplicate Tag name' : '标签名重复',
-  'the tag name is too long': '标签名重复'
+  'the tag name is too long': '标签名重复',
 }
 
 @Component
