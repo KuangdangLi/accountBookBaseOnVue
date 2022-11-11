@@ -8,14 +8,18 @@ Vue.use(Vuex)
 type RootState = {
   recordList:RecordItem[],
   tagList:Tag[],
-  currentTag: Tag | undefined
+  currentTag: Tag | undefined,
+  createTagError: Error | null
+  createRecordError: Error | null
 }
 
 const store = new Vuex.Store({
   state: {
     recordList:[] as RecordItem[],
     tagList:[] as Tag[],
-    currentTag: undefined
+    currentTag: undefined,
+    createTagError: null,
+    createRecordError:  null
   } as RootState,
   mutations: {
     fetchRecords(state){
@@ -39,16 +43,19 @@ const store = new Vuex.Store({
     saveTag(state){
       window.localStorage.setItem('tagList',JSON.stringify(state.tagList))
     },
-    createTag(state){
-      const name = window.prompt('请输入标签名');
+    createTag(state,name:string){
+      // const name = window.prompt('请输入标签名');
       if(name === ''){
-        window.alert('标签名不能为空')
+        // window.alert('标签名不能为空')
+        state.createTagError = new Error('标签名不能为空')
       }else if(state.tagList && name){
         const nameList = state.tagList.map(tag => tag.name)
         if(nameList.indexOf(name)>= 0 ){
-          window.alert('不能输入已存在的标签名')
+          // window.alert('不能输入已存在的标签名')
+          state.createTagError = new Error('标签名重复')
         }else if(name.length >10 ){
-          window.alert('标签名不能过长')
+          // window.alert('标签名不能过长')
+          state.createTagError = new Error('标签名不能过长')
         } else{
           const id = createId().toString()
           state.tagList.push({id,name})
