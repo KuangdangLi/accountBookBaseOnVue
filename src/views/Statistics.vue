@@ -59,6 +59,7 @@ export default class Statistics extends mixins(stateHelper) {
     const {recordList} = this
     if(recordList.length===0){return []}
     const newList = clone(recordList).filter(item=>item.type === this.value).sort((a,b)=>dayjs(b.createdAt).valueOf()-dayjs(a.createdAt).valueOf())
+    if(newList.length===0) return
       const result:Result = [{title:dayjs(newList[0].createdAt).format('YYYY-MM-DD'),items:[newList[0]]}]
       for(let i=1;i<=newList.length;i++){
         if(newList[i]){
@@ -77,7 +78,6 @@ export default class Statistics extends mixins(stateHelper) {
         return sum + item.amount
       },0)
     })
-    console.log(result[0].total);
       return result
   }
   recordTypeList = recordTypeList
