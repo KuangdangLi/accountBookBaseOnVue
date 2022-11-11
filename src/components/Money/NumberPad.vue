@@ -40,7 +40,12 @@ export default class NumberPad extends Vue{
         }
         return;
       }
-      if(this.output.indexOf('.')>=0 && input === '.'){return;}
+      if(this.output.indexOf('.')>=0){
+        if(input === '.'){return;}
+        const [init,float] =  this.output.split('.')
+        console.log(float);
+        if(float.length>=2) {return}
+      }
       this.output += input;
     }
     clear(){

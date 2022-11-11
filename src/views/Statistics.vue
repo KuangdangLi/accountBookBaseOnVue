@@ -76,7 +76,8 @@ export default class Statistics extends mixins(stateHelper) {
       }
     result.map(group=>{
       group.total = group.items.reduce((sum,item)=>{
-        return sum + item.amount
+        console.log(item.amount);
+        return ((sum*100) + (item.amount*100))/100
       },0)
     })
       return result
