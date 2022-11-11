@@ -2,7 +2,7 @@
   <div>
     <layout>
         <Tabs class-prefix="type" :data-source="recordTypeList" :value.sync="value"></Tabs>
-        <ul>
+        <ul v-if="groupedList.length>0">
           <li v-for="group in groupedList" :key="group.title">
            <h3 class="title">{{beautifyDate(group.title)}}<span>￥{{group.total}}</span></h3>
           <ol>
@@ -14,6 +14,7 @@
           </ol>
           </li>
         </ul>
+        <div v-else class="noResult">目前没有相关记录</div>
     </layout>
   </div>
 </template>
@@ -59,7 +60,7 @@ export default class Statistics extends mixins(stateHelper) {
     const {recordList} = this
     if(recordList.length===0){return []}
     const newList = clone(recordList).filter(item=>item.type === this.value).sort((a,b)=>dayjs(b.createdAt).valueOf()-dayjs(a.createdAt).valueOf())
-    if(newList.length===0) return
+    if(newList.length===0) {return []}
       const result:Result = [{title:dayjs(newList[0].createdAt).format('YYYY-MM-DD'),items:[newList[0]]}]
       for(let i=1;i<=newList.length;i++){
         if(newList[i]){
@@ -86,6 +87,10 @@ export default class Statistics extends mixins(stateHelper) {
 </script>
 
 <style lang="scss" scoped>
+  .noResult {
+    padding: 16px;
+    text-align: center;
+  }
   ::v-deep {
     .type-tabs-item{
       background: #C4C4C4;
