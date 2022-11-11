@@ -45,6 +45,7 @@ export default class Money extends mixins(stateHelper) {
   saveRecord(){
     if(this.record.tags?.length===0){
       window.alert('请选择标签')
+      this.reset()
       return
     }
     store.commit('createRecord',this.record)
