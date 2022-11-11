@@ -23,11 +23,11 @@ import Button from '@/components/Button.vue';
 import FormItem from "@/components/FormItem.vue"
 import store from '@/store/index';
 import {mixins} from 'vue-class-component';
-import fetchHelper from '@/mixins/fetchHelper';
+import stateHelper from '@/mixins/stateHelper';
 
 
 @Component({components: {Button,FormItem}})
-export default class EditLabel extends mixins(fetchHelper) {
+export default class EditLabel extends mixins(stateHelper) {
   tag: Tag | undefined
   tagList = store.state.tagList
   created(){

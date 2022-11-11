@@ -24,7 +24,7 @@ import Tabs from '@/components/Tabs.vue';
 import recordTypeList from '@/constants/recordTypeList';
 import store from '@/store/index';
 import {mixins} from 'vue-class-component';
-import fetchHelper from '@/mixins/fetchHelper';
+import stateHelper from '@/mixins/stateHelper';
 import dayjs from 'dayjs';
 import clone from '@/lib/clone';
 
@@ -33,7 +33,7 @@ type Result =  {title:string,items:RecordItem[],total?:number}[]
 @Component({
   components: {Tabs}
 })
-export default class Statistics extends mixins(fetchHelper) {
+export default class Statistics extends mixins(stateHelper) {
   get recordList() {
     return store.state.recordList
   }

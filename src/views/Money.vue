@@ -17,7 +17,7 @@ import {Component} from 'vue-property-decorator';
 import FormItem from '@/components/FormItem.vue';
 import store from "@/store/index"
 import {mixins} from 'vue-class-component';
-import fetchHelper from '@/mixins/fetchHelper';
+import stateHelper from '@/mixins/stateHelper';
 import Tabs from '@/components/Tabs.vue';
 import recordTypeList from '@/constants/recordTypeList';
 
@@ -36,7 +36,7 @@ const version:string = window.localStorage.getItem('recordVersion') || '0';
 @Component({
   components: {Tabs, FormItem, Tags, Types, NumberPad}
 })
-export default class Money extends mixins(fetchHelper) {
+export default class Money extends mixins(stateHelper) {
   tags= store.state.tagList;
   record:RecordItem = {type:'-',amount:0,tags:[],notes:''};
   recordList = store.state.recordList;
