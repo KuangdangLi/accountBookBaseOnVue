@@ -43,7 +43,6 @@ export default class EditLabel extends mixins(stateHelper) {
     this.$router.back()
   }
   update(name:string){
-    console.log('editLabel页面：'+ name);
     if(this.tag) {const id =this.tag.id;store.commit('updateTag', {id:id, newName:name})}
   }
   remove(){

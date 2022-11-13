@@ -2,6 +2,7 @@
   <div>
     <layout>
         <Tabs class-prefix="type" :data-source="recordTypeList" :value.sync="value"></Tabs>
+
         <ul v-if="groupedList.length>0">
           <li v-for="group in groupedList" :key="group.title">
            <h3 class="title">{{beautifyDate(group.title)}}<span>￥{{group.total}}</span></h3>
@@ -76,7 +77,6 @@ export default class Statistics extends mixins(stateHelper) {
       }
     result.map(group=>{
       group.total = group.items.reduce((sum,item)=>{
-        console.log(item.amount);
         return ((sum*100) + (item.amount*100))/100
       },0)
     })
