@@ -55,6 +55,8 @@ export default class Statistics extends mixins(stateHelper) {
       }else{
         return recordDate.format('M月D日')
       }
+    }else{
+      return recordDate.format('YYYY年M月D日')
     }
   }
   get groupedList(){
