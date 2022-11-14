@@ -30,8 +30,17 @@ export default class FormItem extends Vue{
   }
   updateDateValue(event:KeyboardEvent){
     const input = event.target as HTMLInputElement;
+    console.log('input.value');
+    console.log(input.value);
     const [a,b,c] = (input.value.split('-'))
-    const newDate = new Date(Number(a),Number(b),Number(c),23,59).toISOString();
+    console.log('a');
+    console.log(a);
+    console.log('b');
+    console.log(b);
+    console.log('c');
+    console.log(c);
+    const newDate = new Date(Number(a),Number(b)-1,Number(c),23,59).toISOString();
+    console.log('newDate')
     console.log(newDate)
     // dayjs(input.value).format('YYYY-MM-DD');
     this.$emit('update:value',newDate)
