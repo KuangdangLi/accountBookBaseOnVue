@@ -18,7 +18,12 @@ export default  {
 </script>
 
 <style lang="scss" scoped>
+
   .layout-wrapper{
+    @media (min-width: 500px){
+      width: 500px;
+      margin: 0 auto;
+    }
     display: flex;
     flex-direction: column;
     min-height: 100vh;
