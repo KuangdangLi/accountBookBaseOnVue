@@ -2,9 +2,6 @@
   <div>
     <layout>
         <Tabs class-prefix="type" :data-source="recordTypeList" :value.sync="value"></Tabs>
-        <div class="chart-wrapper" ref="chartWrapper">
-          <MyChart class="chart" :options="options"></MyChart>
-        </div>
         <ul v-if="groupedList.length>0">
           <li v-for="group in groupedList" :key="group.title">
            <h3 class="title">{{beautifyDate(group.title)}}<span>￥{{group.total}}</span></h3>
@@ -17,7 +14,10 @@
           </ol>
           </li>
         </ul>
-        <div v-else class="noResult">目前没有相关记录</div>
+      <div v-else class="noResult">目前没有相关记录</div>
+      <div class="chart-wrapper" ref="chartWrapper">
+        <MyChart class="chart" :options="options"></MyChart>
+      </div>
     </layout>
   </div>
 </template>
