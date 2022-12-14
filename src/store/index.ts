@@ -37,10 +37,15 @@ const store = new Vuex.Store({
     fetchTags(state){
       state.tagList = JSON.parse(window.localStorage.getItem('tagList') || '[]')
       if(state.tagList && (state.tagList as Tag[]).length === 0){
-        store.commit('createTag','衣')
-        store.commit('createTag','食')
-        store.commit('createTag','住')
-        store.commit('createTag','行')
+        store.commit('createTag', {name:'餐饮',type:'-'})
+        store.commit('createTag', {name:'交通',type:'-'})
+        store.commit('createTag', {name:'购物',type:'-'})
+        store.commit('createTag', {name:'生活缴费',type:'-'})
+        store.commit('createTag', {name:'工资',type:'+'})
+        store.commit('createTag', {name:'奖金',type:'+'})
+        store.commit('createTag', {name:'红包',type:'+'})
+        store.commit('createTag', {name:'其它',type:'-'})
+        store.commit('createTag', {name:'其它',type:'+'})
       }
     },
     setCurrentTag(state,id:string){
@@ -49,8 +54,9 @@ const store = new Vuex.Store({
     saveTag(state){
       window.localStorage.setItem('tagList',JSON.stringify(state.tagList))
     },
-    createTag(state,name:string){
+    createTag(state:RootState,payload: {name: string, type: Type}){
       // const name = window.prompt('请输入标签名');
+      const {name,type} = payload
       state.createTagError = null
       if(!name ){
         return
@@ -64,7 +70,7 @@ const store = new Vuex.Store({
           state.createTagError = new Error('the tag name is too long')
         } else{
           const id = createId().toString()
-          state.tagList.push({id,name})
+          state.tagList.push({id,name,type})
           store.commit('saveTag')
         }
       }
