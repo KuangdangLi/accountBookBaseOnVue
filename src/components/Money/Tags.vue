@@ -4,51 +4,34 @@
       <button @click="createTag">新增标签</button>
     </div>
     <ul class="current">
-      <li v-for="tag in tagList" :key="tag.id" @click="toggle(tag.id)" :class="{selected: idList.indexOf(tag.id)>=0}">{{tag.name}}</li>
+      <li v-for="tag in tagList" :key="tag.id" @click="toggle(tag.id)" :class="{selected: tag.id===value}">{{tag.name}}</li>
     </ul>
   </div>
 </template>
 
 <script lang="ts">
-import {Component, Prop, Watch} from 'vue-property-decorator';
+import {Component, Prop} from 'vue-property-decorator';
 import store from '@/store/index';
 import stateHelper from '@/mixins/stateHelper';
 import {mixins} from 'vue-class-component';
 
 @Component
 export default class Tags extends mixins(stateHelper){
-  @Prop(Array) value!:Tag[];
+  @Prop(String) value!:string;
   @Prop(String) type!:Type;
   get tagList(){
     return  store.state.tagList.filter(tag => tag.type === this.type);
   }
-  selectedTags = this.value;
-  idList:string[] = []
   createTag(){
     const name = window.prompt('请输入标签名')
     store.commit('createTag', {name,type:this.type})
     if(store.state.createTagError){window.alert(store.state.createTagError.message)}
   }
-  @Watch('value')
-  select(){
-    this.selectedTags = this.value;
-    this.idList = this.selectedTags.map(item=>item.id);
-  }
   toggle(id:string){
-    const index = this.idList.indexOf(id);
-    if(index>=0){
-      this.selectedTags.splice(index,1)
-      this.$emit('update:value',this.selectedTags)
-    }else{
-      let index = -1;
-      for(let i = 0;i<this.tagList.length;i++){
-        if(this.tagList[i].id === id){
-          index = i;
-          break
-        }
-      }
-      this.selectedTags.push(this.tagList[index])
-      this.$emit('update:value',this.selectedTags)
+    if(id===this.value){
+      this.$emit('update:value','')
+    }else {
+      this.$emit('update:value',id)
     }
   }
 }

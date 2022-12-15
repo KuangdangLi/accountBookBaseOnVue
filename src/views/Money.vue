@@ -4,7 +4,7 @@
     <Tabs :data-source="recordTypeList" class-prefix="type" :value.sync="record.type"></Tabs>
     <FormItem :value.sync="record.notes" title="备注" edit-place-holder="在这里输入备注"></FormItem>
     <FormItem :type="'date'" :value.sync="record.createdAt" title="日期" ></FormItem>
-    <Tags  :value.sync="record.tags" :type="record.type"></Tags>
+    <Tags  :value.sync="record.tagID" :type="record.type"></Tags>
     {{record}}
   </Layout>
 </template>
@@ -38,14 +38,14 @@ const version:string = window.localStorage.getItem('recordVersion') || '0';
 })
 export default class Money extends mixins(stateHelper) {
   tags= store.state.tagList;
-  record:RecordItem = {type:'-',amount:0,tags:[],notes:''};
+  record:RecordItem = {type:'-',amount:0,tagID:'',notes:''};
   recordList = store.state.recordList;
   recordTypeList = recordTypeList
   reset(){
-    this.record = {type:'-',amount:0,tags:[],notes:''};
+    this.record = {type:'-',amount:0,tagID:'',notes:''};
   }
   saveRecord(){
-    if(this.record.tags?.length===0){
+    if(!(this.record.tagID)){
       window.alert('请选择标签')
       this.reset()
       return
