@@ -16,7 +16,7 @@
         </ul>
       <div v-else class="noResult">目前没有相关记录</div>
       <div class="chart-wrapper" ref="chartWrapper">
-        <MyChart class="chart" :options="options"></MyChart>
+        <MyChart class="chart" :options="chartOption" :type="value"></MyChart>
       </div>
     </layout>
   </div>
@@ -29,7 +29,7 @@ import recordTypeList from '@/constants/recordTypeList';
 import store from '@/store/index';
 import {mixins} from 'vue-class-component';
 import stateHelper from '@/mixins/stateHelper';
-import dayjs from 'dayjs';
+import dayjs, {Dayjs} from 'dayjs';
 import clone from '@/lib/clone';
 import MyChart from '@/components/MyChart.vue';
 import {EChartOption} from 'echarts';
@@ -40,6 +40,7 @@ type Result =  {title:string,items:RecordItem[],total?:number}[]
   components: {MyChart, Tabs}
 })
 export default class Statistics extends mixins(stateHelper) {
+  value = '-'
   get recordList() {
     return store.state.recordList
   }
@@ -198,8 +199,58 @@ export default class Statistics extends mixins(stateHelper) {
     }
 
   }
+  get chartOption(){
+    const x:RecordItem[] = JSON.parse(JSON.stringify(this.recordList.filter(recordItem=>recordItem.type===this.value)))
+    x.sort((a,b)=>{
+      if(a.createdAt===b.createdAt)return 0;
+      if((a.createdAt as string)>(b.createdAt as string))return -1;
+      if((a.createdAt as string)<(b.createdAt as string))return 1;
+      return 0
+    })
+    const lastDay = dayjs(x[0]?.createdAt)
+    const dateArr:Dayjs[] = []
+    dateArr.push(lastDay)
+    const amountArr:number[] = []
+    let dataOfAMonth:RecordItem[] = []
+    const pushAmount = (all:RecordItem[],uni:Dayjs)=>{
+      const xxx = all.filter(item=>dayjs(item.createdAt).isSame(uni,'day'))
+      dataOfAMonth=[...dataOfAMonth,...xxx]
+      xxx[0] ? amountArr.push(xxx.reduce((sum,item)=>{return ((sum*100) + (item.amount*100))/100},0)) : amountArr.push(0)
+    }
+    pushAmount(x,lastDay)
+    for(let i = 0;i<31;i++){
+      if(i!==0){
+        const xx = lastDay.subtract(i,'day')
+        dateArr.push(xx)
+        pushAmount(x,xx)
+      }
+    }
+    const idAndAmount:IdAndAmount = {}
+    dataOfAMonth.forEach(item=> {
+      // const tagName = findTag(item.tagID).name
+      if(!(idAndAmount[item.tagID])){
+        idAndAmount[item.tagID] = item.amount
+      }else{
+        idAndAmount[item.tagID] = ((idAndAmount[item.tagID] *100 ) + (item.amount * 100)) / 100
+      }
+    })
+    const pieChartOption:PieChartOption[] = []
+    let medium = {name:'',value:0}
+    for(let i in idAndAmount){
+      medium.name = this.currentTagName(i)
+      medium.value = idAndAmount[i]
+      pieChartOption.push(JSON.parse(JSON.stringify(medium)))
+    }
+    pieChartOption.sort((a,b)=>{
+      if(a.value === b.value) return 0
+      if(a.value > b.value) return -1
+      if(a.value < b.value) return 1
+      return 0
+    }).forEach((a,index,array)=>a.itemStyle={color:`${this.value === '-' ? 'rgba(68, 199, 128' : 'rgba(227, 174, 0'},${(1/(array.length))*(array.length-index)})`})
+    const newDate = dateArr.map(date=>date.format('MM-D'))
+    return {dateArr:newDate,amountArr,pieChartOption}
+  }
   recordTypeList = recordTypeList
-  value = '-'
 }
 </script>
 
@@ -238,13 +289,12 @@ export default class Statistics extends mixins(stateHelper) {
     margin-left: 16px;
     color: #999;
   }
-  .chart{
-    width: 430%;
-    &-wrapper{
-      overflow: auto;
-      &::-webkit-scrollbar{
-        display: none;
-      }
-    }
-  }
+  //.chart{
+  //  &-wrapper{
+  //    overflow: auto;
+  //    &::-webkit-scrollbar{
+  //      display: none;
+  //    }
+  //  }
+  //}
 </style>
