@@ -44,8 +44,8 @@ const store = new Vuex.Store({
         store.commit('createTag', {name:'工资',type:'+'})
         store.commit('createTag', {name:'奖金',type:'+'})
         store.commit('createTag', {name:'红包',type:'+'})
-        store.commit('createTag', {name:'其它',type:'-'})
-        store.commit('createTag', {name:'其它',type:'+'})
+        store.commit('createTag', {name:'其它支出',type:'-'})
+        store.commit('createTag', {name:'其它收入',type:'+'})
       }
     },
     setCurrentTag(state,id:string){
