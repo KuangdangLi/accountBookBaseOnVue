@@ -7,7 +7,7 @@
            <h3 class="title">{{beautifyDate(group.title)}}<span>￥{{group.total}}</span></h3>
           <ol>
             <li v-for="item in  group.items" :key="item.createdAt" class="record">
-             <span>{{joinTags(item.tags)}}</span>
+             <span>{{currentTagName(item.tagID)}}</span>
              <span class="notes">{{item.notes}}</span>
              <span>￥{{item.amount}}</span>
             </li>
@@ -43,8 +43,8 @@ export default class Statistics extends mixins(stateHelper) {
   get recordList() {
     return store.state.recordList
   }
-  joinTags(tags:Tag[]){
-    return tags.map(tag=>tag.name).join(',')
+  currentTagName(id:string){
+    return store.state.tagList.filter(tag=>tag.id===id)[0]?.name
   }
   beautifyDate(date:string){
     const recordDate =dayjs(date)
