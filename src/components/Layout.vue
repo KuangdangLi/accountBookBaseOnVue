@@ -18,7 +18,6 @@ export default  {
 </script>
 
 <style lang="scss" scoped>
-
   .layout-wrapper{
     @media (min-width: 500px){
       width: 500px;
@@ -26,10 +25,11 @@ export default  {
     }
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
-  }
-  .content{
-    flex-grow: 1;
-    overflow: auto;
+    max-height: 100vh;
+    overflow-y: hidden;
+    >.content{
+      flex-grow: 1;
+      overflow-y: hidden;
+    }
   }
 </style>
