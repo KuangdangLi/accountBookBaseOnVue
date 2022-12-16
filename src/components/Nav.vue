@@ -36,9 +36,16 @@ nav {
     justify-content: center;
     align-items: center;
     flex-direction: column;
-  }
-  > .item.selected{
-    color: $color-highlight;
+    .icon {
+      width: 26px;
+      height: 26px;
+    }
+    &.selected{
+          color: #3eb575;
+          .icon{
+            fill: #3eb575;
+          }
+    }
   }
 }
 </style>
