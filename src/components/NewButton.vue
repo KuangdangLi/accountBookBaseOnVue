@@ -20,3 +20,7 @@ export default class NewButton extends Vue {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+
+</style>

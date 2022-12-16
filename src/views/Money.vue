@@ -5,7 +5,6 @@
     <FormItem :value.sync="record.notes" title="备注" edit-place-holder="在这里输入备注"></FormItem>
     <FormItem :type="'date'" :value.sync="record.createdAt" title="日期" ></FormItem>
     <Tags  :value.sync="record.tagID" :type="record.type"></Tags>
-    {{record}}
   </Layout>
 </template>
 

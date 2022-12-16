@@ -25,9 +25,9 @@ export default  {
     }
     display: flex;
     flex-direction: column;
-    max-height: 100vh;
+    height: 100vh;
     overflow-y: hidden;
-    >.content{
+    .content{
       flex-grow: 1;
       overflow-y: hidden;
     }
