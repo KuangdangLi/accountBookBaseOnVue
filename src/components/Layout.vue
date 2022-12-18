@@ -30,6 +30,7 @@ export default  {
     .content{
       flex-grow: 1;
       overflow-y: hidden;
+      transform: rotate(360deg);
     }
   }
 </style>

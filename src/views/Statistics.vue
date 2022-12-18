@@ -3,13 +3,13 @@
     <layout>
       <Tabs class-prefix="type" :data-source="recordTypeList" :value.sync="value"></Tabs>
       <div class="wrapper" :class="value==='-' ? 'minus groupList' : 'plus groupList'">
-      <Detail :value="groupedList" :type="value" />
-        <div class="chart-wrapper" ref="chartWrapper">
+      <Detail v-if="viewSwitch" :value="groupedList" :type="value" />
+        <div v-else class="chart-wrapper" ref="chartWrapper">
           <MyChart class="chart" :options="chartOption" :type="value"></MyChart>
         </div>
         <div class="buttonWrapper">
-          <NewButton v-if="viewSwitch" @click="()=>()=>{console.log('执行了')}" iconName="bar"/>
-          <NewButton v-else @click="()=>()=>{viewSwitch=true}" iconName="detail"/>
+          <NewButton v-if="viewSwitch" @innerEvent="()=>{viewSwitch=false}" iconName="bar"/>
+          <NewButton v-else @innerEvent="()=>{viewSwitch=true}" iconName="detail"/>
         </div>
       </div>
     </layout>
