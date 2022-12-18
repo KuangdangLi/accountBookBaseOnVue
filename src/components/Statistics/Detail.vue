@@ -2,7 +2,7 @@
   <ul>
   <li v-for="group in value" :key="group.title">
     <header>
-      <span>{{ group.title.split('年')[1] }}</span>
+      <span>{{ MMdd(group.title) }}</span>
       <span>￥{{ group.total }}</span>
     </header>
     <div v-for="recordItem in group.items" class="content" :key="recordItem.createdAt">
@@ -41,6 +41,9 @@ export default class Detail extends Vue {
   @Prop(String) type!:Type
   currentTagName(id:string){
     return store.state.tagList.filter(tag=>tag.id===id)[0]?.name
+  }
+  MMdd(string:string){
+    return dayjs(string).format('MM月D日')
   }
   HHmm(recordItem:RecordItem){
     return dayjs(recordItem.createdAt).format('HH:mm')

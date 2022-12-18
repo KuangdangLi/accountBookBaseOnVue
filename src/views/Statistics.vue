@@ -1,14 +1,17 @@
 <template>
   <div>
     <layout>
-        <Tabs class-prefix="type" :data-source="recordTypeList" :value.sync="value"></Tabs>
+      <Tabs class-prefix="type" :data-source="recordTypeList" :value.sync="value"></Tabs>
       <div class="wrapper" :class="value==='-' ? 'minus groupList' : 'plus groupList'">
       <Detail :value="groupedList" :type="value" />
         <div class="chart-wrapper" ref="chartWrapper">
           <MyChart class="chart" :options="chartOption" :type="value"></MyChart>
         </div>
+        <div class="buttonWrapper">
+          <NewButton v-if="viewSwitch" @click="()=>()=>{console.log('执行了')}" iconName="bar"/>
+          <NewButton v-else @click="()=>()=>{viewSwitch=true}" iconName="detail"/>
+        </div>
       </div>
-<!--      <div v-else class="noResult">目前没有相关记录</div>-->
     </layout>
   </div>
 </template>
@@ -23,15 +26,15 @@ import stateHelper from '@/mixins/stateHelper';
 import dayjs, {Dayjs} from 'dayjs';
 import clone from '@/lib/clone';
 import MyChart from '@/components/Statistics/MyChart.vue';
-import {EChartOption} from 'echarts';
 import Detail from '@/components/Statistics/Detail.vue';
-
+import NewButton from '@/components/NewButton.vue';
 
 @Component({
-  components: {Detail, MyChart, Tabs}
+  components: {Detail, MyChart, Tabs,NewButton}
 })
 export default class Statistics extends mixins(stateHelper) {
   value = '-'
+  viewSwitch:boolean = true
   get recordList() {
     return store.state.recordList
   }
@@ -60,15 +63,15 @@ export default class Statistics extends mixins(stateHelper) {
     if(recordList.length===0){return []}
     const newList = clone(recordList).filter(item=>item.type === this.value).sort((a,b)=>dayjs(b.createdAt).valueOf()-dayjs(a.createdAt).valueOf())
     if(newList.length===0) {return []}
-      const result:Result = [{title:dayjs(newList[0].createdAt).format('YYYY年MM月DD日'),items:[newList[0]]}]
-      for(let i=1;i<=newList.length;i++){
+      const result:Result = [{title:(newList[0].createdAt as string),items:[newList[0]]}]
+      for(let i=1;i<newList.length;i++){
         if(newList[i]){
           const current = newList[i]
           const last = result[result.length-1]
           if(dayjs(current.createdAt).isSame(last.title,'day')){
             last.items.push(current)
           }else{
-            result.push({title:dayjs(current.createdAt).format('YYYY年MM月DD日'),items:[newList[i]]})
+            result.push({title:(current.createdAt as string),items:[newList[i]]})
           }
 
         }
@@ -147,6 +150,32 @@ export default class Statistics extends mixins(stateHelper) {
     ::v-deep &.plus{
       .iconWrapper{
         background-color: #e3ae00;
+      }
+    }
+    >.buttonWrapper{
+      position: fixed;
+      bottom: 15%;
+      left: 1%;
+      >::v-deep .button{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        >.iconWrapper{
+          padding: 10px;
+          border-radius: 50%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          >svg{
+            width: 15px;
+            height: 15px;
+            fill: white;
+          }
+        }
+        >span{
+          display: inline-block;
+        }
       }
     }
   }
