@@ -1,30 +1,34 @@
 <template>
     <layout>
       <Tabs :data-source="recordTypeList" class-prefix="type" :value.sync="type"></Tabs>
-      <div class="tags">
-        <router-link class="tag" :to="`/labels/edit/${tag.id}`" v-for="tag in tags" :key="tag.id">
-          <span>{{ tag.name }}</span>
-          <Icon name="right"></Icon>
-        </router-link>
-        <div class="createTag-wrapper">
-          <Button @click="createTag">新建标签</Button>
-        </div>
-      </div>
+      <ul :class="type ==='-' ? 'minus' : 'plus'">
+        <li v-for="tag in tags" :key="tag.id">
+          <router-link :to="`/labels/edit/${tag.id}`">
+            <div class="iconWrapper">
+              <Icon :id="tag.id" />
+            </div>
+            <span>{{ tag.name }}</span>
+          </router-link>
+        </li>
+        <li class="addButton">
+          <NewButton icon-name="add" content="新增标签" @createTag="createTag"/>
+        </li>
+      </ul>
     </layout>
 </template>
 
 <script lang="ts">
 import {Component} from 'vue-property-decorator';
 import Tabs from '@/components/Tabs.vue';
-import Button from '@/components/Button.vue';
 import store from '@/store/index';
 import {mixins} from 'vue-class-component';
 import stateHelper from '@/mixins/stateHelper';
 import RecordTypeList from '@/constants/recordTypeList';
-
+import Icon from '@/components/Icon.vue';
+import NewButton from '@/components/NewButton.vue';
 
 @Component({
-  components: {Tabs, Button}
+  components: {Tabs,Icon,NewButton}
 })
 export default class Labels extends mixins(stateHelper) {
   type:Type = '-'
@@ -41,27 +45,73 @@ export default class Labels extends mixins(stateHelper) {
 </script>
 
 <style lang="scss" scoped>
-.tags {
-  background: white;
-  font-size: 16px;
-  padding-left: 16px;
-  > .tag {
-    min-height: 44px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border-bottom: 1px solid #e6e6e6;
-    svg {
-      width: 18px;
-      height: 18px;
-      color: #666;
-      margin-right: 16px;
+ul{
+  margin-top: 10px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  ::v-deep &.minus{
+    .iconWrapper{
+      background-color: #3eb575;
     }
   }
-}
-.createTag-wrapper{
-  text-align: center;
-  padding: 16px;
-  margin-top: 44-16px;
+  ::v-deep &.plus{
+    .iconWrapper{
+      background-color: #e3ae00;
+    }
+  }
+   >li{
+    -webkit-tap-highlight-color: rgba(255,255,255,0);
+    margin-bottom: 10px;
+    >a{
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+    >.button{
+      font: inherit;
+    }
+     .iconWrapper{
+      border: 1px solid #f8f8f8;
+      padding: 15px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      svg{
+        width: 30px;
+        height: 30px;
+        fill: white;
+      }
+    }
+    span{
+      display: inline-block;
+    }
+  }
+  >::v-deep li.addButton{
+    -webkit-tap-highlight-color: rgba(255,255,255,0);
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: center;
+    >.button{
+      font: inherit;
+    }
+    .iconWrapper{
+      border: 1px solid #f8f8f8;
+      padding: 15px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      svg{
+        width: 30px;
+        height: 30px;
+        fill: white;
+      }
+    }
+    span{
+      display: inline-block;
+    }
+  }
 }
 </style>
