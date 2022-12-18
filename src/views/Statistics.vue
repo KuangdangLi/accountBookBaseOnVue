@@ -2,22 +2,25 @@
   <div>
     <layout>
         <Tabs class-prefix="type" :data-source="recordTypeList" :value.sync="value"></Tabs>
-        <ul v-if="groupedList.length>0">
-          <li v-for="group in groupedList" :key="group.title">
-           <h3 class="title">{{beautifyDate(group.title)}}<span>￥{{group.total}}</span></h3>
-          <ol>
-            <li v-for="item in  group.items" :key="item.createdAt" class="record">
-             <span>{{currentTagName(item.tagID)}}</span>
-             <span class="notes">{{item.notes}}</span>
-             <span>￥{{item.amount}}</span>
-            </li>
-          </ol>
-          </li>
-        </ul>
-      <div v-else class="noResult">目前没有相关记录</div>
-      <div class="chart-wrapper" ref="chartWrapper">
-        <MyChart class="chart" :options="chartOption" :type="value"></MyChart>
+<!--        <ul v-if="groupedList.length>0">-->
+<!--          <li v-for="group in groupedList" :key="group.title">-->
+<!--           <h3 class="title">{{beautifyDate(group.title)}}<span>￥{{group.total}}</span></h3>-->
+<!--          <ol>-->
+<!--            <li v-for="item in  group.items" :key="item.createdAt" class="record">-->
+<!--             <span>{{currentTagName(item.tagID)}}</span>-->
+<!--             <span class="notes">{{item.notes}}</span>-->
+<!--             <span>￥{{item.amount}}</span>-->
+<!--            </li>-->
+<!--          </ol>-->
+<!--          </li>-->
+<!--        </ul>-->
+      <div class="wrapper" :class="value==='-' ? 'minus groupList' : 'plus groupList'">
+      <Detail :value="groupedList" :type="value" />
+        <div class="chart-wrapper" ref="chartWrapper">
+          <MyChart class="chart" :options="chartOption" :type="value"></MyChart>
+        </div>
       </div>
+<!--      <div v-else class="noResult">目前没有相关记录</div>-->
     </layout>
   </div>
 </template>
@@ -31,13 +34,13 @@ import {mixins} from 'vue-class-component';
 import stateHelper from '@/mixins/stateHelper';
 import dayjs, {Dayjs} from 'dayjs';
 import clone from '@/lib/clone';
-import MyChart from '@/components/MyChart.vue';
+import MyChart from '@/components/Statistics/MyChart.vue';
 import {EChartOption} from 'echarts';
+import Detail from '@/components/Statistics/Detail.vue';
 
-type Result =  {title:string,items:RecordItem[],total?:number}[]
 
 @Component({
-  components: {MyChart, Tabs}
+  components: {Detail, MyChart, Tabs}
 })
 export default class Statistics extends mixins(stateHelper) {
   value = '-'
@@ -69,7 +72,7 @@ export default class Statistics extends mixins(stateHelper) {
     if(recordList.length===0){return []}
     const newList = clone(recordList).filter(item=>item.type === this.value).sort((a,b)=>dayjs(b.createdAt).valueOf()-dayjs(a.createdAt).valueOf())
     if(newList.length===0) {return []}
-      const result:Result = [{title:dayjs(newList[0].createdAt).format('YYYY-MM-DD'),items:[newList[0]]}]
+      const result:Result = [{title:dayjs(newList[0].createdAt).format('YYYY年MM月DD日'),items:[newList[0]]}]
       for(let i=1;i<=newList.length;i++){
         if(newList[i]){
           const current = newList[i]
@@ -77,7 +80,7 @@ export default class Statistics extends mixins(stateHelper) {
           if(dayjs(current.createdAt).isSame(last.title,'day')){
             last.items.push(current)
           }else{
-            result.push({title:dayjs(current.createdAt).format('YYYY-MM-DD'),items:[newList[i]]})
+            result.push({title:dayjs(current.createdAt).format('YYYY年MM月DD日'),items:[newList[i]]})
           }
 
         }
@@ -255,6 +258,20 @@ export default class Statistics extends mixins(stateHelper) {
 </script>
 
 <style lang="scss" scoped>
+  .wrapper{
+    height: 85%;
+    overflow-y: auto;
+    ::v-deep &.minus{
+      .iconWrapper{
+        background-color: #4ead75;
+      }
+    }
+    ::v-deep &.plus{
+      .iconWrapper{
+        background-color: #e3ae00;
+      }
+    }
+  }
   .noResult {
     padding: 16px;
     text-align: center;

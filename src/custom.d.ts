@@ -28,3 +28,5 @@ type PieChartOption = {
   name:string,
   itemStyle:object
 }
+
+type Result =  {title:string,items:RecordItem[],total?:number}[]
