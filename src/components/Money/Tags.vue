@@ -8,7 +8,7 @@
         <span>{{ tag.name }}</span>
       </li>
       <li>
-        <NewButton icon-name="add" content="新增标签" @createTag="createTag"/>
+        <NewButton icon-name="add" content="新增标签" @innerEvent="createTag"/>
       </li>
     </ul>
     </div>

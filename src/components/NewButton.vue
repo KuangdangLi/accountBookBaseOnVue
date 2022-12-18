@@ -1,5 +1,5 @@
 <template>
-  <button class="button" @click="add">
+  <button class="button" @click="trigger">
     <div class="iconWrapper">
       <Icon :name="iconName" />
     </div>
@@ -15,8 +15,8 @@ import {Prop} from 'vue-property-decorator';
 export default class NewButton extends Vue {
  @Prop() iconName!:string
  @Prop() content!:string
-  add(){
-   this.$emit('createTag')
+  trigger(){
+   this.$emit('innerEvent')
   }
 }
 </script>
