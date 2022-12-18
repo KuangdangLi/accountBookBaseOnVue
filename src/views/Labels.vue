@@ -1,7 +1,7 @@
 <template>
     <layout>
       <Tabs :data-source="recordTypeList" class-prefix="type" :value.sync="type"></Tabs>
-      <ul :class="type ==='-' ? 'minus' : 'plus'">
+      <ul :class="type ==='-' ? 'minus' : 'plus'" class="tagList">
         <li v-for="tag in tags" :key="tag.id">
           <router-link :to="`/labels/edit/${tag.id}`">
             <div class="iconWrapper">
@@ -45,7 +45,7 @@ export default class Labels extends mixins(stateHelper) {
 </script>
 
 <style lang="scss" scoped>
-ul{
+ul.tagList{
   margin-top: 10px;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
