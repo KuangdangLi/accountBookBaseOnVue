@@ -2,8 +2,10 @@
   <Layout class-prefix="layout">
     <NumberPad :value.sync="record.amount" @submit="saveRecord"></NumberPad>
     <Tabs :data-source="recordTypeList" class-prefix="type" :value.sync="record.type"></Tabs>
-    <FormItem :value.sync="record.notes" title="备注" edit-place-holder="在这里输入备注"></FormItem>
-    <FormItem :type="'date'" :value.sync="record.createdAt" title="日期" ></FormItem>
+    <div class="layerWrapper">
+      <DatePicker :init-date.sync="record.createdAt" :picker-switch.sync="datePickerSwitch"/>
+      <FormItem :value.sync="record.notes" title="备注" edit-place-holder="在这里输入备注"></FormItem>
+    </div>
     <Tags  :value.sync="record.tagID" :type="record.type"></Tags>
   </Layout>
 </template>
@@ -19,6 +21,8 @@ import {mixins} from 'vue-class-component';
 import stateHelper from '@/mixins/stateHelper';
 import Tabs from '@/components/Tabs.vue';
 import recordTypeList from '@/constants/recordTypeList';
+import DatePicker from '@/components/DatePicker.vue';
+import dayjs from 'dayjs';
 
 const version:string = window.localStorage.getItem('recordVersion') || '0';
 // if(version === '0.0.1'){
@@ -33,15 +37,16 @@ const version:string = window.localStorage.getItem('recordVersion') || '0';
 
 
 @Component({
-  components: {Tabs, FormItem, Tags, Types, NumberPad}
+  components: {DatePicker, Tabs, FormItem, Tags, Types, NumberPad}
 })
 export default class Money extends mixins(stateHelper) {
+  datePickerSwitch = false
   tags= store.state.tagList;
-  record:RecordItem = {type:'-',amount:0,tagID:'',notes:''};
+  record:RecordItem = {type:'-',amount:0,tagID:'',notes:'',createdAt:dayjs().toISOString()};
   recordList = store.state.recordList;
   recordTypeList = recordTypeList
   reset(){
-    this.record = {type:'-',amount:0,tagID:'',notes:''};
+    this.record = {type:'-',amount:0,tagID:'',notes:'',createdAt:dayjs().toISOString()};
   }
   saveRecord(){
     if(!(this.record.tagID)){
@@ -56,8 +61,18 @@ export default class Money extends mixins(stateHelper) {
 </script>
 
 <style lang="scss">
-.layout-content {
-  display: flex;
-  flex-direction: column-reverse;
+  .layout-content {
+    display: flex;
+    flex-direction: column-reverse;
+  }
+   div.layerWrapper{
+    height: 40px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+     -webkit-tap-highlight-color: rgba(0,0,0,0);
+     >.formItemWrapper{
+      width: 50vw;
+      user-select: none;
+    }
 }
 </style>

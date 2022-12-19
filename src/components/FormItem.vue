@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="formItemWrapper">
     <label class="formItem">
       <span class="name">{{ title }}</span>
       <input v-if="type=== 'date'" :type="type||'text'" :value="turnTO(value)" @change="updateDateValue">
@@ -43,20 +43,23 @@ export default class FormItem extends Vue{
 </script>
 
 <style lang="scss" scoped>
-.formItem {
-  font-size: 14px;
-  padding-left: 16px;
-  display: flex;
-  align-items: center;
-  .name {
-    padding-right: 16px;
+  div.formItemWrapper{
+    .formItem {
+      font-size: 14px;
+      padding-left: 16px;
+      display: flex;
+      align-items: center;
+      .name {
+        padding-right: 16px;
+        white-space: nowrap;
+      }
+      input {
+        height: 40px;
+        flex-grow: 1;
+        background: transparent;
+        border: none;
+        padding-right: 16px;
+      }
+    }
   }
-  input {
-    height: 64px;
-    flex-grow: 1;
-    background: transparent;
-    border: none;
-    padding-right: 16px;
-  }
-}
 </style>
