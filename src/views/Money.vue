@@ -67,9 +67,11 @@ export default class Money extends mixins(stateHelper) {
   }
    div.layerWrapper{
     height: 40px;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+     display: flex;
      -webkit-tap-highlight-color: rgba(0,0,0,0);
+     >.datePickerWrapper{
+       width: 50vw;
+     }
      >.formItemWrapper{
       width: 50vw;
       user-select: none;
