@@ -2,7 +2,12 @@
   <div>
     <layout>
       <Tabs class-prefix="type" :data-source="recordTypeList" :value.sync="value"></Tabs>
-      <div class="wrapper" :class="value==='-' ? 'minus groupList' : 'plus groupList'">
+      <div class="layerWrapper">
+        <MonthPicker :initMonth.sync="selectedMonth" :picker-switch.sync="pickerSwitch" />
+        <div>
+          {{ `总额：￥${recordList.reduce((sum, item) => {return ((sum * 100) + (item.amount * 100)) / 100}, 0)}` }}</div>
+      </div>
+      <div class="wrapper" :class="value==='-' ? 'minus groupList' : 'plus groupList'" @click="pickerSwitch=false">
       <Detail v-if="viewSwitch" :value="groupedList" :type="value" />
         <div v-else class="chart-wrapper" ref="chartWrapper">
           <MyChart class="chart" :options="chartOption" :type="value"></MyChart>
@@ -28,15 +33,18 @@ import clone from '@/lib/clone';
 import MyChart from '@/components/Statistics/MyChart.vue';
 import Detail from '@/components/Statistics/Detail.vue';
 import NewButton from '@/components/NewButton.vue';
+import MonthPicker from '@/components/MonthPicker.vue';
 
 @Component({
-  components: {Detail, MyChart, Tabs,NewButton}
+  components: {Detail, MyChart, Tabs,NewButton,MonthPicker}
 })
 export default class Statistics extends mixins(stateHelper) {
   value = '-'
   viewSwitch:boolean = true
+  pickerSwitch:boolean = false
+  selectedMonth = dayjs()
   get recordList() {
-    return store.state.recordList
+    return store.state.recordList.filter(item=>item.type === this.value).filter((recordItem)=>dayjs(recordItem.createdAt).isSame(this.selectedMonth,'month'))
   }
   currentTagName(id:string){
     return store.state.tagList.filter(tag=>tag.id===id)[0]?.name
@@ -44,7 +52,7 @@ export default class Statistics extends mixins(stateHelper) {
   get groupedList(){
     const {recordList} = this
     if(recordList.length===0){return []}
-    const newList = clone(recordList).filter(item=>item.type === this.value).sort((a,b)=>dayjs(b.createdAt).valueOf()-dayjs(a.createdAt).valueOf())
+    const newList = clone(recordList).sort((a,b)=>dayjs(b.createdAt).valueOf()-dayjs(a.createdAt).valueOf())
     if(newList.length===0) {return []}
       const result:Result = [{title:(newList[0].createdAt as string),items:[newList[0]]}]
       for(let i=1;i<newList.length;i++){
@@ -139,6 +147,13 @@ export default class Statistics extends mixins(stateHelper) {
 </script>
 
 <style lang="scss" scoped>
+  div.layerWrapper{
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 20px;
+    align-items: center;
+    font-size: 14px;
+  }
   .wrapper{
     height: 85%;
     overflow-y: auto;
