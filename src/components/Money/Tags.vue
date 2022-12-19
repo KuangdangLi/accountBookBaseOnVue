@@ -81,7 +81,7 @@ overflow-y: hidden;
   width: 100%;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
   font-size: 10px;
-  overflow-y: hidden;
+  overflow-y: auto;
   > ::v-deep li {
     margin-bottom: 10px;
     display: flex;
