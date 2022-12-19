@@ -1,6 +1,11 @@
 <template>
   <div class="datePickerWrapper">
-    <div class="trigger" @click="()=>{$emit('update:pickerSwitch',!pickerSwitch);}">{{displayDate.format('YYYY-MM-DD')}}</div>
+    <div class="trigger" @click="()=>{$emit('update:pickerSwitch',!pickerSwitch);}">
+      <div class="iconWrapper">
+        <Icon name="calendar" />
+      </div>
+      <span>{{displayDate.format('YYYY-MM-DD')}}</span>
+    </div>
     <div v-if="pickerSwitch" class="picker">
     <div class="head">
       <span @click="() => {mediumDate = (mediumDate.month(mediumDate.month() - 1));}">&lt;</span>
@@ -34,10 +39,13 @@
 import Vue from 'vue';
 import {Component, Prop} from 'vue-property-decorator';
 import dayjs, {Dayjs} from 'dayjs';
+import Icon from '@/components/Icon.vue';
 
 type DayList = Dayjs[]
 
-@Component({})
+@Component({
+  components:{Icon}
+})
 export default class DatePicker extends Vue {
   @Prop() initDate!:string
   @Prop() pickerSwitch!:boolean
@@ -111,6 +119,15 @@ export default class DatePicker extends Vue {
       color: black;
       cursor: pointer;
       user-select: none;
+      >.iconWrapper{
+        margin-top: -3px;
+        margin-right: 10px;
+        display: flex;
+        align-items: center;
+        >::v-deep svg{
+          fill: #3eb575;
+        }
+      }
     }
     >.picker {
       position: absolute;
