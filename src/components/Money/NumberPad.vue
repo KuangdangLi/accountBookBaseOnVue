@@ -1,5 +1,5 @@
 <template>
-  <div class="numberPad">
+  <div class="numberPadWrapper">
     <div class="output">{{ output }}</div>
     <div class="buttons">
       <button @click="inputContent">1</button>
@@ -13,9 +13,9 @@
       <button @click="inputContent">7</button>
       <button @click="inputContent">8</button>
       <button @click="inputContent">9</button>
-      <button @click="ok" class="ok">OK</button>
+      <button @click="ok" :class="`ok ${typeColor}`">OK</button>
       <button @click="inputContent" class="zero">0</button>
-      <button @click="inputContent">.</button>
+      <button @click="inputContent" class="dot">.</button>
     </div>
   </div>
 </template>
@@ -27,7 +27,20 @@ import {Component, Prop} from 'vue-property-decorator';
 @Component
 export default class NumberPad extends Vue{
     @Prop(Number) value!:number;
+    @Prop(String) type!:Type
     output:string = this.value.toString();
+    get typeColor(){
+      let className = ''
+      if(this.type === '-'){
+        className = 'minus'
+      }else if(this.type === '+'){
+        className = 'plus'
+      }
+      if(Number(this.output) !== 0){
+        className = className.concat(' ready')
+      }
+      return className
+    }
     inputContent(event:MouseEvent){
       const button = event.target as HTMLButtonElement;
       const input = button.textContent!;
@@ -48,7 +61,7 @@ export default class NumberPad extends Vue{
         }
       } else{
         if(input === '.'){return;}
-        const [init,float] =  this.output.split('.')
+        const [,float] =  this.output.split('.')
         if(float.length>=2) {return}
       }
       this.output += input;
@@ -72,55 +85,53 @@ export default class NumberPad extends Vue{
 </script>
 
 <style lang="scss" scoped>
-@import "~@/assets/style/helper.scss";
-
-.numberPad {
-  .output {
-    @extend %clearFix;
-    @extend %innerShadow;
-    font-size: 36px;
-    font-family: Consolas, monospace;
-    padding: 9px 16px;
-    text-align: right;
-  }
-  .buttons {
-    @extend %clearFix;
-    > button {
-      width: 25%;
-      height: 64px;
-      float: left;
-      background: transparent;
-      border: none;
-      &.ok {
-        height: 64*2px;
-        float: right;
-      }
-      &.zero {
-        width: 25*2%;
-      }
-      $bg: #f2f2f2;
-      &:nth-child(1) {
-        background: $bg;
-      }
-      &:nth-child(2), &:nth-child(5) {
-        background: darken($bg, 4%);
-      }
-      &:nth-child(3), &:nth-child(6), &:nth-child(9) {
-        background: darken($bg, 4*2%);
-      }
-      &:nth-child(4), &:nth-child(7), &:nth-child(10) {
-        background: darken($bg, 4*3%);
-      }
-      &:nth-child(8), &:nth-child(11), &:nth-child(13) {
-        background: darken($bg, 4*4%);
-      }
-      &:nth-child(14) {
-        background: darken($bg, 4*5%);
-      }
-      &:nth-child(12) {
-        background: darken($bg, 4*6%);
+  div.numberPadWrapper{
+    >.output{
+      font-family: Consolas , monospace;
+      font-size: 36px;
+      color: #333;
+      line-height: 72px;
+      text-align: right;
+      padding-right: 16px;
+      background-color: #fff;
+    }
+    >.buttons{
+      padding: 5px 0;
+      width: 100%;
+      display: grid;
+      grid-template-rows: 52px 52px 52px 52px;
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+      gap: 5px;
+      grid-template-areas:
+    '1 2 3 delete'
+    '4 5 6 clear'
+    '7 8 9 OK'
+    'zero zero dot OK'
+    ;
+      button{
+        background-color: white;
+        font-size: 18px;
+        border-radius: 5px;
+        &.ok{
+          grid-area: OK;
+          color: white;
+          &.minus{
+            background-color: rgba(62, 181, 117,0.5);
+            &.ready{
+              background-color: rgb(62, 181, 117);
+            }
+          }
+          &.plus{
+            background-color: rgba(227, 174, 0,0.5);
+            &.ready{
+              background-color: rgb(227, 174, 0);
+            }
+          }
+        }
+        &.zero{
+          grid-area: zero;
+        }
       }
     }
   }
-}
 </style>

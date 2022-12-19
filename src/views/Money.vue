@@ -1,6 +1,6 @@
 <template>
   <Layout class-prefix="layout">
-    <NumberPad :value.sync="record.amount" @submit="saveRecord"></NumberPad>
+    <NumberPad :value.sync="record.amount" :type="record.type" @submit="saveRecord"></NumberPad>
     <Tabs :data-source="recordTypeList" class-prefix="type" :value.sync="record.type"></Tabs>
     <div class="layerWrapper">
       <DatePicker :init-date.sync="record.createdAt" :picker-switch.sync="datePickerSwitch"/>
