@@ -29,7 +29,7 @@ export default  {
     overflow-y: hidden;
     .content{
       flex-grow: 1;
-      overflow-y: hidden;
+      overflow: hidden;
       transform: rotate(360deg);
     }
   }
