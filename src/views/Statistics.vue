@@ -41,23 +41,6 @@ export default class Statistics extends mixins(stateHelper) {
   currentTagName(id:string){
     return store.state.tagList.filter(tag=>tag.id===id)[0]?.name
   }
-  beautifyDate(date:string){
-    const recordDate =dayjs(date)
-    const now = dayjs()
-    if(recordDate.isSame(now,'year')){
-      if(recordDate.isSame(now,'day')){
-        return recordDate.format('M月D日') + ' 今天'
-      }else if(recordDate.isSame(now.subtract(1,'day'),'day')){
-        return recordDate.format('M月D日')+ ' 昨天'
-      }else if(recordDate.isSame(now.subtract(2,'day'),'day')){
-        return recordDate.format('M月D日')+ ' 前天'
-      }else{
-        return recordDate.format('M月D日')
-      }
-    }else{
-      return recordDate.format('YYYY年M月D日')
-    }
-  }
   get groupedList(){
     const {recordList} = this
     if(recordList.length===0){return []}
@@ -135,6 +118,23 @@ export default class Statistics extends mixins(stateHelper) {
     return {dateArr:newDate,amountArr,pieChartOption}
   }
   recordTypeList = recordTypeList
+  modifyOpacity(){
+    const x = document.getElementsByClassName('buttonWrapper')[0] as HTMLDivElement
+    const xx = document.getElementsByClassName('groupList')[0].scrollTop
+    setTimeout(()=>{
+      if(document.getElementsByClassName('groupList')[0].scrollTop === xx){
+        (x).style.opacity = '1'
+      }else {
+        (x).style.opacity = '0.5'
+      }
+    },20)
+  }
+  mounted(){
+    window.addEventListener('scroll',this.modifyOpacity,true)
+  }
+  beforeDestroy(){
+    window.removeEventListener('scroll',this.modifyOpacity)
+  }
 }
 </script>
 
@@ -194,12 +194,4 @@ export default class Statistics extends mixins(stateHelper) {
       }
     }
   }
-  //.chart{
-  //  &-wrapper{
-  //    overflow: auto;
-  //    &::-webkit-scrollbar{
-  //      display: none;
-  //    }
-  //  }
-  //}
 </style>
