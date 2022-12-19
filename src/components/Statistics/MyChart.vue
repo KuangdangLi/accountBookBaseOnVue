@@ -148,6 +148,8 @@ export default class MyChart extends Vue {
     width: 100%;
     height: 300px;
     overflow-x: hidden;
+    display: flex;
+    justify-content: center;
   }
 }
 </style>
