@@ -13,7 +13,6 @@
   <div class="button-wrapper">
     <Button @click="remove">删除标签</Button>
   </div>
-    {{tag}}
   </layout>
 </template>
 

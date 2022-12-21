@@ -102,7 +102,6 @@ export default class Statistics extends mixins(stateHelper) {
     }
     const idAndAmount:IdAndAmount = {}
     dataOfAMonth.forEach(item=> {
-      // const tagName = findTag(item.tagID).name
       if(!(idAndAmount[item.tagID])){
         idAndAmount[item.tagID] = item.amount
       }else{

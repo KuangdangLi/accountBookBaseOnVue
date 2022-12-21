@@ -35,7 +35,6 @@ export default class MonthPicker extends Vue {
   @Prop() initMonth!:Dayjs
   @Prop() pickerSwitch!:boolean
   medium = dayjs(this.initMonth.toISOString())
-  // selectedMonth = undefined
   get monthList(){
     const x = []
     for(let i = 0;i<12;i++){
@@ -52,9 +51,7 @@ export default class MonthPicker extends Vue {
   printMonth=(e:MouseEvent)=>{
     const x = dayjs((e.target as HTMLOListElement).dataset.date)
     this.$emit('update:initMonth',x)
-    console.log(this.pickerSwitch);
     this.$emit('update:pickerSwitch',false)
-    console.log(this.pickerSwitch);
   }
 }
 </script>
