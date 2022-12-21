@@ -3,7 +3,8 @@
       <Tabs :data-source="recordTypeList" class-prefix="type" :value.sync="type"></Tabs>
       <ul :class="type ==='-' ? 'minus' : 'plus'" class="tagList">
         <li v-for="tag in tags" :key="tag.id">
-          <router-link :to="`/labels/edit/${tag.id}`">
+          <router-link :to="(tag.id<10) ? '/labels' : `/labels/edit/${ tag.id}`">
+<!--            `/labels/edit/${((tag.id<10) ? '' : tag.id)}`-->
             <div class="iconWrapper">
               <Icon :id="tag.id" />
             </div>
