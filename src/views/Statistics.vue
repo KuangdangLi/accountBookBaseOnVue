@@ -7,7 +7,7 @@
         <div>
           {{ `总额：￥${recordList.reduce((sum, item) => {return ((sum * 100) + (item.amount * 100)) / 100}, 0)}` }}</div>
       </div>
-      <div class="wrapper" :class="value==='-' ? 'minus groupList' : 'plus groupList'" @click="pickerSwitch=false">
+      <div v-if="recordList[0]" class="wrapper" :class="value==='-' ? 'minus groupList' : 'plus groupList'" @click="pickerSwitch=false">
       <Detail v-if="viewSwitch" :value="groupedList" :type="value" />
         <div v-else class="chart-wrapper" ref="chartWrapper">
           <MyChart class="chart" :options="chartOption" :type="value"></MyChart>
