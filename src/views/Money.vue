@@ -1,5 +1,4 @@
 <template>
-  <div @click="qrcodeSwitch=false">
   <Layout class-prefix="layout" >
     <NumberPad :value.sync="record.amount" :type="record.type" @submit="saveRecord"></NumberPad>
     <Tabs :data-source="recordTypeList" class-prefix="type" :value.sync="record.type"></Tabs>
@@ -8,16 +7,7 @@
       <FormItem :value.sync="record.notes" title="备注" edit-place-holder="在这里输入备注"></FormItem>
     </div>
     <Tags  :value.sync="record.tagID" :type="record.type"></Tags>
-    <div v-if="qrcodeSwitch" class="qrcodeWrapper" >
-      <div class="github">
-      <img src="../../public/githubVue.png" alt="">
-      </div>
-      <div class="gitee">
-      <img src="../../public/githubVue.png" alt="">
-      </div>
-    </div>
   </Layout>
-  </div>
 </template>
 
 <script lang="ts">
@@ -67,12 +57,6 @@ export default class Money extends mixins(stateHelper) {
     }
     store.commit('createRecord',this.record)
     this.reset()
-  }
-  mounted(){
-    if(document.documentElement.clientWidth>500){
-      this.qrcodeSwitch = true
-      window.alert('为了您得到满意的浏览效果，请用手机扫描二维码打开本页面')
-    }
   }
 }
 </script>
