@@ -84,7 +84,7 @@ const store = new Vuex.Store({
         }
       }
       if(index !== -1) {
-        state.recordList.filter(item=>item.tagID=id).forEach(recordItem=> {if(recordItem.type==='-'){recordItem.tagID='8'}else {recordItem.tagID = '9'}})
+        state.recordList.filter(item => item.tagID === id).forEach(recordItem=> {if(recordItem.type==='-'){recordItem.tagID='8'}else {recordItem.tagID = '9'}})
         store.commit('saveRecord')
         state.tagList.splice(index,1)
         store.commit('saveTag')
