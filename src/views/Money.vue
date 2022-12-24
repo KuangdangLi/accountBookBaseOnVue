@@ -1,6 +1,5 @@
 <template>
   <Layout class-prefix="layout">
-    444
     <NumberPad :value.sync="record.amount" :type="record.type" @submit="saveRecord"></NumberPad>
     <Tabs :data-source="recordTypeList" class-prefix="type" :value.sync="record.type"></Tabs>
     <div class="layerWrapper">

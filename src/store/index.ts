@@ -68,6 +68,8 @@ const store = new Vuex.Store({
         }else if(name.length >10 ){
           // window.alert('标签名不能过长')
           state.createTagError = new Error('the tag name is too long')
+        }else if(name.indexOf(' ')>=0){
+          window.alert('标签名不能出现空格')
         } else{
           const id = createId().toString()
           state.tagList.push({id,name,type})
