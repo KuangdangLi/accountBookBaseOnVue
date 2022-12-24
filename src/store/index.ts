@@ -101,7 +101,11 @@ const store = new Vuex.Store({
         const names = state.tagList.map(tag=>tag.name)
         if(names.indexOf(newName)>=0){
           window.alert('标签名重复')
-        }else{
+        }else if(newName.indexOf(' ')>=0){
+          window.alert('标签名不能出现空格')
+        }else if(!newName){
+          window.alert('标签名不能为空')
+        } else{
           store.commit('setCurrentTag',payload.id)
           const tag = state.currentTag
           tag && (tag.name = newName)
