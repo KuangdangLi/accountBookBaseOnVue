@@ -10,10 +10,14 @@
 <script lang="ts">
 
 import Nav from '@/components/Nav.vue';
-export default  {
-  name: "Layout",
-  props: ['classPrefix'],
-  components: {Nav}
+import {Component, Prop} from 'vue-property-decorator';
+import Vue from 'vue';
+
+@Component({
+  components:{Nav}
+})
+export default class Layout extends Vue{
+  @Prop() classPrefix!:string
 }
 </script>
 
@@ -26,11 +30,12 @@ export default  {
     display: flex;
     flex-direction: column;
     height: 100vh;
-    overflow-y: hidden;
+    overflow: hidden;
+    transform: rotate(360deg);
     .content{
       flex-grow: 1;
       overflow: hidden;
-      transform: rotate(360deg);
+      text-align: center;
     }
   }
 </style>
