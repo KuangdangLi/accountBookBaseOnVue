@@ -127,14 +127,16 @@ export default class Statistics extends mixins(stateHelper) {
   recordTypeList = recordTypeList
   modifyOpacity(){
     const x = document.getElementsByClassName('buttonWrapper')[0] as HTMLDivElement
-    const xx = document.getElementsByClassName('groupList')[0].scrollTop
+    const xx = document.getElementsByClassName('groupList')[0]?.scrollTop
+    if(x&&xx){
     setTimeout(()=>{
-      if(document.getElementsByClassName('groupList')[0].scrollTop === xx){
+      if(document.getElementsByClassName('groupList')[0]?.scrollTop === xx){
         (x).style.opacity = '1'
       }else {
         (x).style.opacity = '0.5'
       }
     },20)
+    }
   }
   mounted(){
     window.addEventListener('scroll',this.modifyOpacity,true)
