@@ -132,7 +132,7 @@ export default class DatePicker extends Vue {
     >.picker {
       position: absolute;
       top: 30px;
-      right: -60px;
+      right: 10px;
       z-index: 99;
       background-color: white;
       border-radius: 10px;

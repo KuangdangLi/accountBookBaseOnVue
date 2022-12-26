@@ -3,9 +3,9 @@
     <NumberPad :value.sync="record.amount" :type="record.type" @submit="saveRecord"></NumberPad>
     <Tabs :data-source="recordTypeList" class-prefix="type" :value.sync="record.type"></Tabs>
     <div class="layerWrapper">
+      <FormItem :value.sync="record.notes" title="备注" edit-place-holder="在这里输入备注"></FormItem>
       <DatePicker :init-date.sync="record.createdAt" :picker-switch.sync="datePickerSwitch"/>
-      <div class="note" @click="addNote">{{`添加备注: ${record.notes}`}}</div>
-<!--      <FormItem :value.sync="record.notes" title="备注" edit-place-holder="在这里输入备注"></FormItem>-->
+      <!--      <div class="note" @click="addNote">{{`添加备注: ${record.notes}`}}</div>-->
     </div>
     <Tags  :value.sync="record.tagID" :type="record.type"></Tags>
   </Layout>
@@ -49,13 +49,13 @@ export default class Money extends mixins(stateHelper) {
   reset(){
     this.record = {type:'-',amount:0,tagID:'',notes:'',createdAt:dayjs().toISOString()};
   }
-  addNote(){
-    let note = window.prompt('请输入备注')
-    if(!note){note=''}
-    if(note.indexOf(' ')>=0){note='';window.alert('备注中不能出现空格')}
-    if(note.length>6){window.alert('备注不能过长');return;}
-    this.record.notes = note
-  }
+  // addNote(){
+  //   let note = window.prompt('请输入备注')
+  //   if(!note){note=''}
+  //   if(note.indexOf(' ')>=0){note='';window.alert('备注中不能出现空格')}
+  //   if(note.length>6){window.alert('备注不能过长');return;}
+  //   this.record.notes = note
+  // }
   saveRecord(){
     if(!(this.record.tagID)){
       window.alert('请选择标签')
